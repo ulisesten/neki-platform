@@ -1,0 +1,72 @@
+*{padding: 0px; margin: 0px; border: 0; vertical-align: baseline;}
+
+header {
+  padding: 10px 20px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+input[type="button"]{
+    color: black;
+    padding: 2px 5px;
+    margin: 0 5px;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    cursor: pointer;
+}
+
+/******************************** Main Section ********************************/
+/************* Board *************/
+#user {
+  padding: 2px;
+  margin: 1px;}
+.pub_txt{
+    padding: 5px 0;
+    border-style:solid;
+    border-width:1px;
+    border-color:#3673A2;
+    border-left:none;
+    border-right:none;
+    margin-bottom: 8px;
+    /*color: white;*/
+    width:100%;
+    /*background-color: #313131;*/
+    resize:none;
+    overflow: hidden;
+    outline: none;
+}
+
+.border{
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 3px;
+    padding: 8px 0;
+}
+
+/************* GRID **************/
+/*corto*/
+@media only screen and (min-width: 368px) {
+    .main-w{width: 100%;}
+    .main-p{position: relative; left: 0%;}
+}
+/*Mediano*/
+@media only screen and (min-width: 568px) {
+    .main-w{width: 61%;}
+    .main-p{position: relative; left: 0%;}
+}
+/*Largo*/
+@media only screen and (min-width: 768px) {
+    .main-w{width: 49%;}
+    .main-p{position: relative; left: 22%;}
+}
+/*Extra largo*/
+@media only screen and (min-width: 968px) {
+    .main-w{width: 38.8%;}
+    .main-p{position: relative; left: 20.4%;}
+}

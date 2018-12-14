@@ -1,13 +1,28 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <link rel='icon' href='https://res.cloudinary.com/djlzeapiz/image/upload/v1544741360/favicon.ico'></link>
-  <title>Neki</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Inicio</title>
+<meta charset="utf-8">
+<meta name="keywords" content="chat, social, amigos">
+<meta name="viewport" content="width=device−width; initial−scale=1.0; maximum-scale=1.0; minimum.scale=1.0;">
 
+<link rel="stylesheet", href="stylesheets/index.css"></link>
+<link rel='icon' href='https://res.cloudinary.com/djlzeapiz/image/upload/v1544741360/favicon.ico'></link>
 </head>
 <body>
-    <h1> Bienvenido a Neki </h1>
+    <header>
+        <h1> Neki </h1>
+        <h3> Bienvenido a Neki </h3>
+    </header>
+    <main class="main-w main-p">
+        <div class="board border">
+            <textarea id='pubContent' class="pub_txt"></textarea>
+            <input id='pubSender' type="button" name="" value="Enviar">
+        </div>
+    </main>
+    <script src="scripts/socket.io.js"></script>
+    <script src="scripts/home.js"></script>
 </body>
 </html>
+

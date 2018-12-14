@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var app = require('../app'),
-    //websockets = require('../websockets'),
+    websockets = require('../utils/websockets'),
     http = require('http');
 
 
@@ -9,7 +9,7 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
 var server = http.createServer(app);
 const io = require('socket.io')(server);
-//websockets(io);
+websockets(io);
 
 server.listen(port, ip, function () {
   console.log( "Listening on " + ip + ", port " + port )

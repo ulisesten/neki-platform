@@ -8,6 +8,7 @@ var fs = require('fs'),
 /**@global */
 var vGlobal = {}
 
+var PUBLIC = './public'
 
 /**Main Function */
 function app(req,res){
@@ -19,9 +20,22 @@ function app(req,res){
         if(req.url === '/'){
             vGlobal = csrf.newToken()
             util.loadView('./views/index.html', res, vGlobal.token)
+        } else
+        
+        if(req.url === '/stylesheets/index.css'){
+            util.loadStatic(PUBLIC+'/stylesheets/index.css', res, req.headers['accept-encoding'])
+        } else
+
+        if(req.url === '/scripts/home.js'){
+            util.loadStatic(PUBLIC+'/scripts/home.js', res, req.headers['accept-encoding'])
+        } else
+        
+        if(req.url === '/scripts/socket.io.js'){
+            util.loadStatic(PUBLIC+'/scripts/socket.io.js', res, req.headers['accept-encoding'])
+        } else {
+            res.writeHead(404)
+            res.end();
         }
-
-
 
     } else {
         res.writeHead(404)
