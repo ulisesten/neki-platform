@@ -17,22 +17,45 @@ function app(req,res){
 
     /**Requests */
     if(req.method === 'GET'){
+        
+        /**GET requests */
         if(req.url === '/'){
             vGlobal = csrf.newToken()
             util.loadView('./views/index.html', res, vGlobal.token)
-        } else
+        } 
         
-        if(req.url === '/stylesheets/index.css'){
+        else
+          if(req.url === '/stylesheets/index.css'){
             util.loadStatic(PUBLIC+'/stylesheets/index.css', res, req.headers['accept-encoding'])
-        } else
-
-        if(req.url === '/scripts/home.js'){
+          }
+          
+        else
+          if(req.url === '/scripts/home.js'){
             util.loadStatic(PUBLIC+'/scripts/home.js', res, req.headers['accept-encoding'])
-        } else
-        
-        if(req.url === '/scripts/socket.io.js'){
+          }
+          
+        else
+          if(req.url === '/scripts/socket.io.js'){
             util.loadStatic(PUBLIC+'/scripts/socket.io.js', res, req.headers['accept-encoding'])
-        } else {
+          }
+        
+        else /**HTML Registrar */
+          if(req.url === '/registrar'){
+            vGlobal = csrf.newToken()
+            util.loadView('./views/registrar.html', res, vGlobal.token)
+          }
+          
+        else
+          if(req.url === '/stylesheets/access.css'){
+            util.loadStatic(PUBLIC+'/stylesheets/access.css', res, req.headers['accept-encoding'])
+          }
+          
+        else
+          if(req.url === '/scripts/registrar.js'){
+            util.loadStatic(PUBLIC+'/scripts/registrar.js', res, req.headers['accept-encoding'])
+          }
+          
+        else {
             res.writeHead(404)
             res.end();
         }

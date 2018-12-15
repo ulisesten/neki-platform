@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Inicio</title>
+<meta charset="utf-8">
+<meta name="keywords" content="chat, social, amigos">
+<meta name="viewport" content="width=device−width; initial−scale=1.0; maximum-scale=1.0; minimum.scale=1.0;">
+<link rel="stylesheet", href="stylesheets/access.css"></link>
+<link rel='icon' href='https://res.cloudinary.com/djlzeapiz/image/upload/v1544741360/favicon.ico'></link>
+</head>
+<body>
+    <h1> Neki </h1>
+    <h3> Welcome to Neki register page </h3>
+<div id="main">
+    <div class="panel">
+        <div class="part1">
+            <label> Correo </label>
+            <input id="correo" class="el" type="text" name="correo"></input>
+            <label> Contraseña </label>
+            <input id="clave" class="el" type='password' name='clave'></input>
+            <input id="sig1" class="elb" type='button', name='siguiente1' value='Siguiente'></input>
+        </div>
+        <div class='part2 hidden'>
+            <label> Confirmar Correo </label>
+            <input id="confCorreo" class="el" type='text' name='correoConf'/>
+            <label> Confirmar Contraseña </label>
+            <input id='confClave' class='el' type='password' name='claveConf'/>
+            <input id='sig2' class='elb' type='button' name='siguiente2' value='Siguiente'/>
+        </div>
+        <div class='part3 hidden'>
+            <label> Nombre de Usuario </label>
+            <input id='nombre' class='el' type='text', name='usuario'/>
+            <br />
+            <label> Contribuir </label>
+            <div class='helpful'> ? </div>
+            <input id='contrib' type='checkbox' name='contrib' checked />
+            <div class='space'></div>
+            <input id='enviar' class='elb' type='button' name='enviar' value='Enviar' />
+        </div>
+    </div>
+    <script src="scripts/registrar.js"></script>
+</div>
+</body>
+</html>

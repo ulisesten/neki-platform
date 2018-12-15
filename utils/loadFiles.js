@@ -21,16 +21,16 @@ function loadStatic(path, res, acceptEncoding){
         if(!err){
             var raw = fs.createReadStream(path);
 
-					if (acceptEncoding.match(/\bdeflate\b/)) {
-						res.writeHead(200, { 'content-encoding': 'deflate' });
-						raw.pipe(zlib.createDeflate()).pipe(res);
-					} else if (acceptEncoding.match(/\bgzip\b/)) {
-						res.writeHead(200, { 'content-encoding': 'gzip' });
-						raw.pipe(zlib.createGzip()).pipe(res);
-					} else {
-						res.writeHead(200, {});
-						raw.pipe(response);
-}
+            if (acceptEncoding.match(/\bdeflate\b/)) {
+                res.writeHead(200, { 'content-encoding': 'deflate' });
+                raw.pipe(zlib.createDeflate()).pipe(res);
+            } else if (acceptEncoding.match(/\bgzip\b/)) {
+                res.writeHead(200, { 'content-encoding': 'gzip' });
+                raw.pipe(zlib.createGzip()).pipe(res);
+            } else {
+                res.writeHead(200, {});
+                raw.pipe(response);
+            }
         } else {
             res.writeHead(404)
             res.end()

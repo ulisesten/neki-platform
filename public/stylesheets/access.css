@@ -1,0 +1,61 @@
+label{margin: 5px 0}
+
+input[type="text"],[type="password"]{
+    position: relative;
+    display: block;
+    border-radius: 0;
+    border-style: none none solid none;
+    border-width: 1px;
+    border-color: gray;}
+
+input[type="button"]{
+    position: relative;
+    color: black;
+    padding: 5px 0;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;}
+
+.el,.elb{ width: 100%; margin: 5px 0;}
+
+.inactive{
+    opacity: 0;
+    transform:translateX(-150%) scale(0.95);}
+
+.hidden{
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    transform:translateX(150%) scale(0.95);}
+
+.quit{height: 0px;}
+
+.inactive,.part1,.part2,.part3{transition:all .8s;}
+
+.space{height: 8px;}
+
+.helpful{
+    padding: 0px 2px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-size: 9px;
+    display: inline-block;
+    cursor: pointer;}
+/**GRID*/
+#main{margin: 0px;}
+.panel{padding: 5px;}
+
+@media only screen and (min-width: 300px){
+    #main { position: absolute; left: 0; top: 40%; width: 100%; }}
+
+@media only screen and (min-width: 600px){
+    #main { position: absolute; left: 33%; top: 40%; width: 300px; }}
+
+/**COMMON*/
+body{
+  padding: 20px 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
+
+a{color: #00B7FF;}
