@@ -11,10 +11,10 @@ var pubSender = getEl('pubSender');
 pubSender.addEventListener('click',function(){
     var newPub = {
       time: '45:78:12',
-      pub: getEl('pubContent').value,
+      content: getEl('pubContent').value,
       tkn: getEl('ctkn').value
     }
-    ws.emit('message',newPub);
+    ws.emit('pub',newPub);
 });
 
 /************** Get Publications **************/
