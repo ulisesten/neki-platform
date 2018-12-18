@@ -17,6 +17,61 @@ pubSender.addEventListener('click',function(){
     ws.emit('pub',newPub);
 });
 
+/************* Publications **************/
+function newEl(el){
+    return document.createElement(el);
+}
+
+function newPub(res){
+    var div = newEl('div');
+    div.setAttribute('class','content pubs sombra');
+    div.setAttribute('id',res.pubid);
+
+    var publication = newEl('p');
+        publication.setAttribute('class','marginClass');
+        publication = setFontSize(publication,res.pub);
+        publication = linkify(publication,res.pub,no_previsualization);
+
+
+    var imgUrl = getImage(res.imagen);
+    var uImg = newEl('img');
+        uImg.setAttribute('class','uImg borde');
+        uImg.setAttribute('src',imgUrl);
+
+    var a = newEl('a');
+        a.setAttribute('class','enlace marginClass usuario');
+        a.setAttribute('href','/pagina/'+res.nombre);
+        a.innerHTML = res.nombre;
+
+    var hora = newEl('span');
+        hora.setAttribute('class','horaP');
+        hora.innerHTML = res.fecha;
+
+    var mg = newEl('span');
+        mg.setAttribute('class','mg reacciones');
+        mg.innerHTML = 'mg';
+
+    var nmg = newEl('span');
+        nmg.setAttribute('class','nmg reacciones');
+        nmg.innerHTML = 'nmg';
+
+    var comment = newEl('span');
+        comment.setAttribute('class','comment reacciones');
+        comment.innerHTML = 'comentar';
+        comment.addEventListener('click',comentar);
+
+    div.prepend(comment);
+    div.prepend(nmg);
+    div.prepend(mg);
+    div.prepend(publication);
+    div.prepend(hora);
+    div.prepend(a);
+    div.prepend(uImg);
+    div.addEventListener('click',getPublicationID);
+
+    getEl('noticias').prepend(div);
+}
+
 /************** Get Publications **************/
 function pubs(){
     fetch('/api/traer-publicaciones', {
