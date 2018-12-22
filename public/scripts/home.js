@@ -27,7 +27,7 @@ function newEl(el){
 
 function newPub(res){
     var div = newEl('div');
-    div.setAttribute('class','content pubs sombra');
+    div.setAttribute('class','pubs border font');
     div.setAttribute('id',res.pubid);
 
     var publication = newEl('p');
@@ -42,12 +42,12 @@ function newPub(res){
         //uImg.setAttribute('src',imgUrl);
 
     var a = newEl('a');
-        a.setAttribute('class','enlace marginClass usuario');
+        a.setAttribute('class','enlace1');
         a.setAttribute('href','/pagina/'+res.nombre);
         a.innerHTML = res.nombre;
 
     var hora = newEl('span');
-        hora.setAttribute('class','horaP');
+        hora.setAttribute('class','time1');
         hora.innerHTML = res.time;
 
     var mg = newEl('span');

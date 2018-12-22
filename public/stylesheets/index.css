@@ -1,12 +1,12 @@
-*{padding: 0px; margin: 0px; border: 0; vertical-align: baseline;}
+*{padding: 0px; margin: 0px; border: 0; vertical-align: baseline; }
 
 header {
   padding: 10px 20px;
   font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.font{
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 }
 
 input[type="button"]{
@@ -20,11 +20,30 @@ input[type="button"]{
     cursor: pointer;
 }
 
+.time1{
+    font-size: 10px;
+    margin: 2px;
+}
+
+.enlace1{
+    text-decoration: none;
+}
+
 /******************************** Main Section ********************************/
+
+.border{
+    border-style: solid;
+    border-width: 1px;
+    border-color: gray;
+    border-radius: 3px;
+    padding: 8px 0;
+}
+
 /************* Board *************/
 #user {
   padding: 2px;
   margin: 1px;}
+
 .pub_txt{
     padding: 5px 0;
     border-style:solid;
@@ -41,12 +60,13 @@ input[type="button"]{
     outline: none;
 }
 
-.border{
-    border-style: solid;
-    border-width: 1px;
-    border-color: gray;
-    border-radius: 3px;
-    padding: 8px 0;
+.board{ margin-bottom: 5px; }
+
+/****** Publications ******/
+
+.pubs{
+    padding: 3px;
+    margin-bottom: 5px;
 }
 
 /************* GRID **************/
