@@ -9,12 +9,15 @@ ws.on('disconnect', function(){});
 
 var pubSender = getEl('pubSender');
 pubSender.addEventListener('click',function(){
-    var newPub = {
+    var pubData = {
+      pubid: 'fhfhfh',
       time: '45:78:12',
+      nombre: 'unoname',
       content: getEl('pubContent').value,
       tkn: getEl('ctkn').value
     }
-    ws.emit('pub',newPub);
+    ws.emit('pub',pubData);
+    newPub(pubData);
 });
 
 /************* Publications **************/
@@ -29,14 +32,14 @@ function newPub(res){
 
     var publication = newEl('p');
         publication.setAttribute('class','marginClass');
-        publication = setFontSize(publication,res.pub);
-        publication = linkify(publication,res.pub,no_previsualization);
+        //publication = setFontSize(publication,res.content);
+        //publication = linkify(publication,res.pub,no_previsualization);
 
 
-    var imgUrl = getImage(res.imagen);
+    //var imgUrl = getImage(res.imagen);
     var uImg = newEl('img');
         uImg.setAttribute('class','uImg borde');
-        uImg.setAttribute('src',imgUrl);
+        //uImg.setAttribute('src',imgUrl);
 
     var a = newEl('a');
         a.setAttribute('class','enlace marginClass usuario');
@@ -45,7 +48,7 @@ function newPub(res){
 
     var hora = newEl('span');
         hora.setAttribute('class','horaP');
-        hora.innerHTML = res.fecha;
+        hora.innerHTML = res.time;
 
     var mg = newEl('span');
         mg.setAttribute('class','mg reacciones');
@@ -58,7 +61,7 @@ function newPub(res){
     var comment = newEl('span');
         comment.setAttribute('class','comment reacciones');
         comment.innerHTML = 'comentar';
-        comment.addEventListener('click',comentar);
+        //comment.addEventListener('click',comentar);
 
     div.prepend(comment);
     div.prepend(nmg);
@@ -67,9 +70,9 @@ function newPub(res){
     div.prepend(hora);
     div.prepend(a);
     div.prepend(uImg);
-    div.addEventListener('click',getPublicationID);
+    //div.addEventListener('click',getPublicationID);
 
-    getEl('noticias').prepend(div);
+    getEl('publications').prepend(div);
 }
 
 /************** Get Publications **************/
