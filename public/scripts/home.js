@@ -30,10 +30,11 @@ function newPub(res){
     div.setAttribute('class','pubs border font');
     div.setAttribute('id',res.pubid);
 
-    var publication = newEl('p');
-        publication.setAttribute('class','marginClass');
-        //publication = setFontSize(publication,res.content);
-        //publication = linkify(publication,res.pub,no_previsualization);
+    var content = newEl('p');
+        content.setAttribute('class','content');
+        content.innerHTML = res.content;
+        //content = setFontSize(publication,res.content);
+        //content = linkify(publication,res.pub,no_previsualization);
 
 
     //var imgUrl = getImage(res.imagen);
@@ -66,7 +67,7 @@ function newPub(res){
     div.prepend(comment);
     div.prepend(nmg);
     div.prepend(mg);
-    div.prepend(publication);
+    div.prepend(content);
     div.prepend(hora);
     div.prepend(a);
     div.prepend(uImg);
