@@ -60,6 +60,13 @@ function app(req,res){
             res.end();
         }
 
+    } else
+        if(req.method === 'POST'){
+            
+            if(req.url === '/api/registrar'){
+              util.loadStatic('./api/registrar.js',res , req.headers['accept-encoding'])
+            }
+
     } else {
         res.writeHead(404)
         res.end();
