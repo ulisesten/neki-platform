@@ -46,7 +46,10 @@ send_btn.addEventListener('click',() => {
 
     if(getEl('contrib').checked){ mContrib = true; }
 
-    if(mNombre !== ""){ register(mNombre, mCorreo, mClave, mCtkn, mContrib); }
+    if(mNombre !== ""){ 
+
+        register(mNombre, mCorreo, mClave, mCtkn, mContrib);
+    }
     else { notif('La información no es correcta'); }
     //cargar.style.display = 'block';
     return false;
@@ -74,14 +77,14 @@ function register(nombre, correo, pass, csrf, contrib){
     }).then(res => {
             if(res.ok == false){
                 //cargar.style.display = 'none';
-                console.log('err');
+                console.log('err',res);
                 return;
             }
             return res.json();
         }).then(res => {
-        console.log(res);
-        //cargar.style.display = 'none';
-        window.location.href = '/';
+            console.log(res);
+            //cargar.style.display = 'none';
+            window.location.href = '/';
         });
 }
 

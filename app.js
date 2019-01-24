@@ -2,26 +2,31 @@
 /**ulisesten at 13/12/18 */
 var fs = require('fs'),
     util = require('./utils/loadFiles'),
-    csrf = require('./utils/csrf-tokens');
+    access = require('./utils/accessControl'),
+    csrf = require('./utils/csrf-tokens'),
+    api = require('./api/api');
 
+var cookie = require('cookie')
 
 /**@global */
 var vGlobal = {}
+var cGlobal = {cookies: ''}
 
 var PUBLIC = './public'
 
 /**Main Function */
 function app(req,res){
-
     req.csrf = vGlobal;
+    //req.cookies = res.cookies = cGlobal.cookies;
 
     /**Requests */
     if(req.method === 'GET'){
         
-        /**GET requests */
+        /********* GET METHOD **********/
         if(req.url === '/'){
             vGlobal = csrf.newToken()
-            util.loadView('./views/index.html', res, vGlobal.token)
+            access.home(req, res, vGlobal.token, cGlobal.cookies);
+            //util.loadView('./views/index.html', res, vGlobal.token)
         } 
         
         else
@@ -62,15 +67,16 @@ function app(req,res){
 
     } else
         if(req.method === 'POST'){
-            
+            /******** POST METHOD *********/
             if(req.url === '/api/registrar'){
-              util.loadStatic('./api/registrar.js',res , req.headers['accept-encoding'])
+              cGlobal.cookies = api.registrationApi(req, res)
             }
 
     } else {
         res.writeHead(404)
         res.end();
     }
+
 }
 
 module.exports = app;
