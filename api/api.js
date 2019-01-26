@@ -8,6 +8,8 @@ var body = '';
 
 function registrationApi(req, res){
     var regToken = jwt.createJWT(body);
+
+    console.log('gen token',regToken)
     var mycookie = cookie.serialize('token', String(regToken), {
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 7 // 1 week
@@ -32,6 +34,7 @@ function registrationApi(req, res){
                 res.writeHead(404);
 
             }
+
             res.end();
 
         });

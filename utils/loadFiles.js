@@ -4,12 +4,11 @@ var fs = require('fs'),
 /**load html views */
 function loadView(path,res,csrf, cookie){
     if (cookie === undefined){
-        cookie = 'token=sdf89sdfs98ffs98'
+        var mystring = {'Content-Type': 'text/html; charset=utf-8'}
+    } else {
+        var mystring = {'Set-Cookie': cookie
+        ,'Content-Type': 'text/html; charset=utf-8'}
     }
-
-    var mystring = {'Set-Cookie': cookie
-    ,'Content-Type': 'text/html; charset=utf-8'}
-
      
     fs.readFile(path, function(err, data){
         if(!err){

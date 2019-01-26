@@ -60,13 +60,7 @@ send_btn.addEventListener('click',() => {
 function register(nombre, correo, pass, csrf, contrib){
     fetch('/api/registrar', {
         credentials: 'include',
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            //'Authorization': 'Bearer '+'ughgkjhcr868hd7bvt6'
-            //"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-        },
+        method: 'POST',
         body: JSON.stringify({
             nombre: nombre,
             correo: correo,
@@ -83,7 +77,6 @@ function register(nombre, correo, pass, csrf, contrib){
             return res.json();
         }).then(res => {
             console.log(res);
-            //cargar.style.display = 'none';
             window.location.href = '/';
         });
 }

@@ -7,6 +7,8 @@ var fs = require('fs'),
     api = require('./api/api');
 
 var cookie = require('cookie')
+var cookiePropagator = require('./utils/populate')
+var propagator = new cookiePropagator()
 
 /**@global */
 var vGlobal = {}
@@ -25,8 +27,8 @@ function app(req,res){
         /********* GET METHOD **********/
         if(req.url === '/'){
             vGlobal = csrf.newToken()
-            access.home(req, res, vGlobal.token, cGlobal.cookies);
-            //util.loadView('./views/index.html', res, vGlobal.token)
+            access.home(req, res, vGlobal.token, propagator.getCookie());
+            
         } 
         
         else
@@ -69,7 +71,9 @@ function app(req,res){
         if(req.method === 'POST'){
             /******** POST METHOD *********/
             if(req.url === '/api/registrar'){
-              cGlobal.cookies = api.registrationApi(req, res)
+               var res = api.registrationApi(req, res)
+               propagator.setCookie(res)
+               cGlobal.cookies = res;
             }
 
     } else {
