@@ -57,25 +57,31 @@ send_btn.addEventListener('click',() => {
 
 /****************************/
 
+
 function register(nombre, correo, pass, csrf, contrib){
-    fetch('/api/registrar', {
-        credentials: 'include',
+
+    let h = new Headers();
+        h.append('credentials','include')
+
+    let req = new Request('/api/registrar', {
         method: 'POST',
+        headers: h,
         body: JSON.stringify({
             nombre: nombre,
             correo: correo,
             contrasena: pass,
             csrf: csrf,
-            contrib: contrib
-        })
-    }).then(res => {
-            if(res.ok == false){
-                //cargar.style.display = 'none';
-                console.log('err',res);
+            contrib: contrib })
+    })
+
+    fetch(req)
+        .then(res => {
+            if(res.ok === false){
                 return;
             }
             return res.json();
-        }).then(res => {
+        })
+        .then(res => {
             console.log(res);
             window.location.href = '/';
         });

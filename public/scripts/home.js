@@ -1,3 +1,8 @@
+/**Getting initial info */
+getPubs();
+
+
+
 /************** WebSockets **************/
 var ws = new io();
 
@@ -77,23 +82,19 @@ function newPub(res){
 }
 
 /************** Get Publications **************/
-function pubs(){
-    fetch('/api/traer-publicaciones', {
+function getPubs(){
+    fetch('/api/getPublications', {
         credentials: 'include',
-        method: 'GET', // or 'PUT'
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer '
-        }
-    }).then(res => {
+        method: 'GET'
+      })
+        .then(res => {
           if(res.ok == false){
-              //cargar.style.display = 'none';
               console.log('err');
               return;
           }
           return res.json();
-      }).then(res => {
+      })
+        .then(res => {
         console.log(res);
       });
 }

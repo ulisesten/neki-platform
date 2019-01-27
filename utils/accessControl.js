@@ -4,18 +4,20 @@ var util = require('./loadFiles'),
     cookie = require('cookie');
 
 
-function home(req, res, token, incomingCookie){
-    var cookieParsed = cookie.parse(req.headers.cookie);
+function home(req, res, csrfToken){
+    var parsedCookie = cookie.parse(req.headers.cookie);
 
-    var decoded = jwt.decode(cookieParsed.token);
-    
-    if(decoded !== null){
-        console.log('decoded', decoded)
-        util.loadView('./views/index.html', res, token, cookieParsed)
+    var decodedToken = jwt.decode(parsedCookie.token)
+    console.log('decodedToken',decodedToken)
+    if(decodedToken){
+        util.loadView('./views/index.html', res, csrfToken)
     } else {
-        console.log('wrong cookie')
+        res.writeHead(302, {
+            'Location': '/registrar'
+            //add other headers here...
+          });
+        res.end();
     }
-
 }
 
 module.exports = {

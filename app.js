@@ -19,7 +19,6 @@ var PUBLIC = './public'
 /**Main Function */
 function app(req,res){
     req.csrf = vGlobal;
-    //req.cookies = res.cookies = cGlobal.cookies;
 
     /**Requests */
     if(req.method === 'GET'){
@@ -27,7 +26,7 @@ function app(req,res){
         /********* GET METHOD **********/
         if(req.url === '/'){
             vGlobal = csrf.newToken()
-            access.home(req, res, vGlobal.token, propagator.getCookie());
+            access.home(req, res, vGlobal.token);
             
         } 
         
@@ -70,10 +69,13 @@ function app(req,res){
     } else
         if(req.method === 'POST'){
             /******** POST METHOD *********/
-            if(req.url === '/api/registrar'){
-               var res = api.registrationApi(req, res)
-               propagator.setCookie(res)
-               cGlobal.cookies = res;
+            if(req.url === '/api/iniciar'){
+              api.loginApi(req, res)
+            }
+            
+            else
+              if(req.url === '/api/registrar'){
+                api.registrationApi(req, res)
             }
 
     } else {

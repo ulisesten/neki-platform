@@ -2,17 +2,12 @@ var fs = require('fs'),
     zlib = require('zlib')
 
 /**load html views */
-function loadView(path,res,csrf, cookie){
-    if (cookie === undefined){
-        var mystring = {'Content-Type': 'text/html; charset=utf-8'}
-    } else {
-        var mystring = {'Set-Cookie': cookie
-        ,'Content-Type': 'text/html; charset=utf-8'}
-    }
+function loadView(path,res,csrf){
+    var headers = {'Content-Type': 'text/html; charset=utf-8'}
      
     fs.readFile(path, function(err, data){
         if(!err){
-           res.writeHead(200, mystring)
+           res.writeHead(200, headers)
            res.write(data)
            res.write('<input id="ctkn" type="hidden" value=' + csrf + ' />')
         } else {
