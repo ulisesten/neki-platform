@@ -15,26 +15,6 @@ function registrationApi(req, res){
 
         body = JSON.parse(body);
 
-        //data to create json web token
-        var dataToEncode = {
-            'id': nanoid(),
-            'correo': body.correo,
-            'usuario': body.nombre,
-            'clave': body.contrasena,
-            'imagen': '',
-            'tipo': 0,
-            'ip': [req.connection.remoteAddress],
-            'contrib': body.contrib,
-            'tiempo': new Date()
-        }
-
-        console.log('data',dataToEncode)
-
-        //Token to store in the cookie
-        var regToken = jwt.createJWT(dataToEncode);
-
-        var mycookie = genCookie(regToken);
-
         //Check if user is in data base already
         query.checkUser(body.correo, function(data){
 
@@ -50,12 +30,35 @@ function registrationApi(req, res){
                         bcrypt.hash(body.contrasena, salt, function(err, hash){
     
                             if(!err){
-                                
-                                //setting the response
-                                console.log('csrf passed');
-                                res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
-                                res.write(JSON.stringify({ nombre: body.nombre, token: regToken}));
-                                res.end();
+                             
+                                //data to create json web token
+                                var dataToSave = {
+                                    'id': nanoid(),
+                                    'correo': body.correo,
+                                    'usuario': body.nombre,
+                                    'clave': hash,
+                                    'imagen': '',
+                                    'tipo': 0,
+                                    'ip': [req.connection.remoteAddress],
+                                    'contrib': body.contrib,
+                                    'tiempo': new Date()
+                                }
+
+                                query.saveUser(dataToSave, (doc) => {
+                                    if(doc !== null){
+                                        //Token to store in the cookie
+                                        var regToken = jwt.createJWT(doc);
+
+                                        var mycookie = genCookie(regToken);
+
+
+                                        //setting the response
+                                        console.log('csrf passed');
+                                        res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
+                                        res.write(JSON.stringify({ nombre: doc.usuario}));
+                                        res.end();
+                                    }
+                                })
                             
                             }
     

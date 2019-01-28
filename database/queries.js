@@ -51,12 +51,20 @@ function checkUser(correo, callback){
     })
 }
 
-function saveUser(data){
+function saveUser(data, cb){
     var info = new model.User(data);
 
-    info.save()
-        .then(() => {
-            console.log('New User Saved')
+    info.save((err, res) => {
+            if (err) {
+                console.log('saveUser: Error al intentar guardar',error);
+                cb(null);
+            } else {
+                console.log('saveUser: El siguiente usuario se guard_o correctamente', nombre);
+                cb({
+                    id: res.id,
+                    nombre: res.usuario,
+                    _id: res._id});
+            }
         });
 }
 
