@@ -50,6 +50,17 @@ function app(req,res){
             vGlobal = csrf.newToken()
             util.loadView('./views/registrar.html', res, vGlobal.token)
           }
+
+        else /**HTML Login */
+          if(req.url === '/iniciar'){
+            vGlobal = csrf.newToken()
+            util.loadView('./views/iniciar.html', res, vGlobal.token)
+          }
+
+        else
+          if(req.url === '/scripts/iniciar.js'){
+            util.loadStatic(PUBLIC+'/scripts/iniciar.js', res, req.headers['accept-encoding'])
+          }
           
         else
           if(req.url === '/stylesheets/access.css'){

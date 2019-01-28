@@ -52,9 +52,12 @@ function checkUser(correo, callback){
 }
 
 function saveUser(data){
-    var info = new model.User({
-        //info
-    });
+    var info = new model.User(data);
+
+    info.save()
+        .then(() => {
+            console.log('New User Saved')
+        });
 }
 
 module.exports = {
