@@ -87,7 +87,8 @@ function loginApi(req, res){
     req.on('data', data => { body += data; });
 
     req.on('end', () => {
-
+        
+        if(body){
         body = JSON.parse(body);
 
         query.checkUser(body.correo, function(doc){
@@ -99,7 +100,7 @@ function loginApi(req, res){
                 if( csrf.verify(req.csrf.secret, body.csrf) ){
 
                     console.log('login csrf passed');
-                    console.log('login',body.correo, doc.correo)
+                    console.log('Trying to login',body.correo)
                     if(body.correo === doc.correo){
 
                         bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
@@ -112,7 +113,7 @@ function loginApi(req, res){
                                 res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
 
                             }
-
+                            body = ''
                             res.end();
 
                         })
@@ -120,24 +121,31 @@ function loginApi(req, res){
                     } else {
                         console.log('login csrf NOT passed');
                         res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-
+                        body = ''
                         res.end();
                     }
 
                 } else {
                     console.log('login csrf NOT passed');
                     res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+                    body = ''
                     res.end();
 
                 }
             } else {
                 res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+                body = ''
                 res.end()
             }
 
         });
-
+      } else {
+        res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+        body = ''
+        res.end()
+      }
     });
+
 }
 
 function genCookie(toCookie){

@@ -39,6 +39,7 @@ function register(correo, pass, csrf){
                 return res.json();
             } else {
                 send_btn.disabled = false;
+                console.log('error')
                 return null;
             }
         })

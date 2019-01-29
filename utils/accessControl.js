@@ -17,9 +17,8 @@ function home(req, res, csrfToken){
             'Location': '/iniciar'
             //add other headers here...
         });
+        res.end()
     }
-
-    res.end()
 
 }
 
