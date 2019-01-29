@@ -4,8 +4,8 @@ var util = require('./loadFiles'),
     cookie = require('cookie');
 
 
-function home(req, res, csrfToken){
-    var parsedCookie = cookie.parse(req.headers.cookie);
+function home(req, res, csrfToken){ 
+    var parsedCookie = cookie.parse(String(req.headers.cookie));
 
     var decodedToken = jwt.decode(parsedCookie.token)
     console.log('decodedToken',decodedToken)
@@ -16,9 +16,11 @@ function home(req, res, csrfToken){
         res.writeHead(302, {
             'Location': '/iniciar'
             //add other headers here...
-          });
-        res.end();
+        });
     }
+
+    res.end()
+
 }
 
 module.exports = {
