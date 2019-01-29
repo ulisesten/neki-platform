@@ -10,7 +10,7 @@ function decode(token){
     try {
         return jwt.verify(token, secret);
     } catch(err) {
-        console.log(err);
+        console.log('Token no v_alido');
         return null;
     }
 }

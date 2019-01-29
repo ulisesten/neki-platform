@@ -9,11 +9,12 @@ function home(req, res, csrfToken){
 
     var decodedToken = jwt.decode(parsedCookie.token)
     console.log('decodedToken',decodedToken)
+
     if(decodedToken){
         util.loadView('./views/index.html', res, csrfToken)
     } else {
         res.writeHead(302, {
-            'Location': '/registrar'
+            'Location': '/iniciar'
             //add other headers here...
           });
         res.end();

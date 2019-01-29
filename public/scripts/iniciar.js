@@ -34,14 +34,17 @@ function register(correo, pass, csrf){
 
     fetch(req)
         .then(res => {
-            if(res.ok === false){
-                return;
+            if(res.status === 200){
+                return res.json();
+            } else {
+                return null;
             }
-            return res.json();
         })
         .then(res => {
-            console.log(res);
-            window.location.href = '/';
+            if(res !== null)
+                window.location.href = '/';
+            else 
+                return;
         });
 }
 

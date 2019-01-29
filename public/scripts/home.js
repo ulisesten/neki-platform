@@ -89,13 +89,13 @@ function getPubs(){
       })
         .then(res => {
           if(res.ok == false){
-              console.log('err');
+              console.log('Home->getPubs(): error');
               return;
           }
           return res.json();
       })
         .then(res => {
-        console.log(res);
+        console.log('Home->getPubs():',res);
       });
 }
 

@@ -38,10 +38,17 @@ function checkUser(correo, callback){
             user.findOne({ 'correo': correo}, function(err, res){
 
                 if(err){
-                    res = null;
+                    console.log(err)
+                    done(null);
+                } else {
+                    console.log('usuario existe')
+                    done({
+                        id: res.id,
+                        nombre: res.usuario,
+                        correo: res.correo,
+                        clave: res.clave,
+                        _id: res._id});
                 }
-
-                done(res);
             })
         })
     }
@@ -59,7 +66,7 @@ function saveUser(data, cb){
                 console.log('saveUser: Error al intentar guardar',error);
                 cb(null);
             } else {
-                console.log('saveUser: El siguiente usuario se guard_o correctamente', nombre);
+                console.log('saveUser: El siguiente usuario se guard_o correctamente', res.usuario);
                 cb({
                     id: res.id,
                     nombre: res.usuario,
@@ -71,5 +78,6 @@ function saveUser(data, cb){
 module.exports = {
     setCount,
     getCount,
-    checkUser
+    checkUser,
+    saveUser
 }

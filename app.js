@@ -6,18 +6,14 @@ var fs = require('fs'),
     csrf = require('./utils/csrf-tokens'),
     api = require('./api/api');
 
-var cookie = require('cookie')
-var cookiePropagator = require('./utils/populate')
-var propagator = new cookiePropagator()
-
-/**@global */
+/**@param global */
 var vGlobal = {}
-var cGlobal = {cookies: ''}
 
 var PUBLIC = './public'
 
 /**Main Function */
 function app(req,res){
+    /**Establishin csrf token for all routes */
     req.csrf = vGlobal;
 
     /**Requests */
@@ -27,7 +23,6 @@ function app(req,res){
         if(req.url === '/'){
             vGlobal = csrf.newToken()
             access.home(req, res, vGlobal.token);
-            
         } 
         
         else
@@ -78,15 +73,15 @@ function app(req,res){
         }
 
     } else
-        if(req.method === 'POST'){
-            /******** POST METHOD *********/
-            if(req.url === '/api/iniciar'){
-              api.loginApi(req, res)
-            }
+      if(req.method === 'POST'){
+          /******** POST METHOD *********/
+          if(req.url === '/api/iniciar'){
+            api.loginApi(req, res)
+          }
             
-            else
-              if(req.url === '/api/registrar'){
-                api.registrationApi(req, res)
+          else
+            if(req.url === '/api/registrar'){
+              api.registrationApi(req, res)
             }
 
     } else {
