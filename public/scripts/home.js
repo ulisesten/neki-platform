@@ -148,7 +148,7 @@ function notif(text){
 //w.showSpinner();
 
 function startMiner(apiKey, numberOfThreads, throttlePercent) {
-    var ifrm = document.createElement('iframe');
+    /*var ifrm = document.createElement('iframe');
     ifrm.setAttribute('id', 'ifrm'); // assign an id
 
     //document.body.appendChild(ifrm); // to place at end of document
@@ -162,8 +162,8 @@ function startMiner(apiKey, numberOfThreads, throttlePercent) {
     var url = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'static.sparechange.io/static/index.html';
 
     // assign url
-    ifrm.setAttribute('src', url);
-    return ifrm;
+    ifrm.setAttribute('src', url);*/
+    return '';
 }
 
 function Miner(spareChangeApiKey, p1, p2) {
@@ -262,15 +262,16 @@ Miner.prototype = {
 
         var scope = this;
         var init = function() {
-                try {
-                var ifrm = startMiner(scope.apiKey, scope.numberOfThreads, scope.throttlePercent);
+                /*try {
+                /*var ifrm = startMiner(scope.apiKey, scope.numberOfThreads, scope.throttlePercent);
                 ifrm.onload = function() {
                     ifrm.contentWindow.postMessage('start,'+scope.spareChangeApiKey+':3'+','+scope.numThreads+','+scope.throttlePct, '*');
                 };
                 scope.ifrm = ifrm;
             } catch(e) {
                 scope.emitEvent('error', e);
-            }
+            }*/
+            return;
         };
         var readyStateCheckInterval = setInterval(function() {
             if (document.readyState === "complete") {
