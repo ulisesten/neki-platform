@@ -92,42 +92,47 @@ function loginApi(req, res){
 
         query.checkUser(body.correo, function(doc){
 
-            var loginToken = jwt.createJWT(doc);
-            var mycookie = genCookie(loginToken);
+            if(doc){
+                var loginToken = jwt.createJWT(doc);
+                var mycookie = genCookie(loginToken);
 
-            if( csrf.verify(req.csrf.secret, body.csrf) ){
+                if( csrf.verify(req.csrf.secret, body.csrf) ){
 
-                console.log('login csrf passed');
-                console.log('login',body.correo, doc.correo)
-                if(body.correo === doc.correo){
+                    console.log('login csrf passed');
+                    console.log('login',body.correo, doc.correo)
+                    if(body.correo === doc.correo){
 
-                    bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
+                        bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
 
-                        if( auth === true ){
-                            res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
-                            res.write(JSON.stringify({ nombre: doc.nombre}));
-                        } else {
-                            console.log('Problemas con las credenciales')
-                            res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+                            if( auth === true ){
+                                res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
+                                res.write(JSON.stringify({ nombre: doc.nombre}));
+                            } else {
+                                console.log('Problemas con las credenciales')
+                                res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
 
-                        }
+                            }
+
+                            res.end();
+
+                        })
+
+                    } else {
+                        console.log('login csrf NOT passed');
+                        res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
 
                         res.end();
-
-                    })
+                    }
 
                 } else {
                     console.log('login csrf NOT passed');
                     res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-
                     res.end();
+
                 }
-
             } else {
-                console.log('login csrf NOT passed');
                 res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-                res.end();
-
+                res.end()
             }
 
         });

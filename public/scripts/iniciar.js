@@ -3,6 +3,7 @@
 var send_btn = getEl('send');
 
 send_btn.addEventListener('click',() => {
+    send_btn.disabled = true;
     var mCorreo = getEl('correo').value,
         mClave = getEl('clave').value,
         mCtkn = getEl('ctkn').value;
@@ -37,6 +38,7 @@ function register(correo, pass, csrf){
             if(res.status === 200){
                 return res.json();
             } else {
+                send_btn.disabled = false;
                 return null;
             }
         })

@@ -37,8 +37,8 @@ function checkUser(correo, callback){
         return new Promise(function (done) {
             user.findOne({ 'correo': correo}, function(err, res){
 
-                if(err){
-                    console.log(err)
+                if(!res){
+                    console.log('usuario no existe',err)
                     done(null);
                 } else {
                     console.log('usuario existe')
