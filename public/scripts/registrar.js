@@ -76,14 +76,17 @@ function register(nombre, correo, pass, csrf, contrib){
 
     fetch(req)
         .then(res => {
-            if(res.ok === false){
-                return;
+            if(res.status === 200){
+                return res.json();
             }
-            return res.json();
+            return null;
         })
         .then(res => {
-            console.log(res);
-            window.location.href = '/';
+            if(res !== null){
+               console.log(res);
+               window.location.href = '/';
+            }
+            return;
         });
 }
 

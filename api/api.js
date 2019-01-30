@@ -5,10 +5,10 @@ var jwt = require('../utils/json-tokens'),
     cookie = require('cookie'),
     bcrypt = require('bcryptjs');
 
-var body = '';
-
 /**Handle the registration request */
 function registrationApi(req, res){
+    var body = '';
+
     req.on('data', data => { body += data; });
 
     req.on('end', () => {
@@ -72,6 +72,7 @@ function registrationApi(req, res){
 
                 console.log('csrf NOT passed');
                 res.writeHead(404, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+                body = '';
                 res.end();
 
             }
@@ -84,6 +85,7 @@ function registrationApi(req, res){
 
 /**Handle the login request */
 function loginApi(req, res){
+    var body = '';
     req.on('data', data => { body += data; });
 
     req.on('end', () => {
@@ -99,8 +101,7 @@ function loginApi(req, res){
 
                 if( csrf.verify(req.csrf.secret, body.csrf) ){
 
-                    console.log('login csrf passed');
-                    console.log('Trying to login',body.correo)
+                    console.log('login csrf passed'); console.log('Trying to login',body.correo);
                     if(body.correo === doc.correo){
 
                         bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {

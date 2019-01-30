@@ -39,14 +39,15 @@ function register(correo, pass, csrf){
                 return res.json();
             } else {
                 send_btn.disabled = false;
-                console.log('error')
+                console.log('error', res)
                 return null;
             }
         })
         .then(res => {
-            if(res !== null)
+            if(res !== null){
+                localStorage.setItem("nombre", res.nombre);
                 window.location.href = '/';
-            else 
+            } else 
                 return;
         });
 }

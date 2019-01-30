@@ -1,5 +1,5 @@
 
-/**ulisesten at 13/12/18 */
+/**ulisesten at 13/Dec/18 */
 var fs = require('fs'),
     util = require('./utils/loadFiles'),
     access = require('./utils/accessControl'),
@@ -8,7 +8,6 @@ var fs = require('fs'),
 
 /**@param global */
 var vGlobal = {}
-
 var PUBLIC = './public'
 
 /**Main Function */
@@ -76,7 +75,7 @@ function app(req,res){
       if(req.method === 'POST'){
           /******** POST METHOD *********/
           if(req.url === '/api/iniciar'){
-            api.loginApi(req, res)
+              api.loginApi(req, res)
           }
             
           else
