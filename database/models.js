@@ -18,6 +18,7 @@ var User = mongoose
                     clave: String,
                     imagen: String,
                     tipo: Number,
+                    ref: String,
                     ip: Array,
                     contrib: Boolean,
                     tiempo: String

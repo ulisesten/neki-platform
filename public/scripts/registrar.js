@@ -1,5 +1,5 @@
 /**ulisesten */
-
+//console.log(window.location.href)
 var sig1_btn = getEl('sig1'),
     sig2_btn = getEl('sig2'),
     send_btn = getEl('enviar');

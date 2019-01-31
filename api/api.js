@@ -20,7 +20,7 @@ function registrationApi(req, res){
 
             //Verify the csrf token and expect to receive null as result from database
             if( csrf.verify(req.csrf.secret, body.csrf) && data === null ){
-
+                
                 //salt to encrypt passwords
                 bcrypt.genSalt(10, function(err, salt) {
 
@@ -39,6 +39,7 @@ function registrationApi(req, res){
                                     'clave': hash,
                                     'imagen': '',
                                     'tipo': 0,
+                                    'ref': req.csrf.ref,
                                     'ip': [req.connection.remoteAddress],
                                     'contrib': body.contrib,
                                     'tiempo': new Date()
