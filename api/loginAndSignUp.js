@@ -1,3 +1,5 @@
+/**Ulisesten at Jan 2019 */
+
 var jwt = require('../utils/json-tokens'),
     csrf = require('../utils/csrf-tokens'),
     query = require('../database/queries'),
@@ -9,7 +11,9 @@ var jwt = require('../utils/json-tokens'),
 function registrationApi(req, res){
     var body = '';
 
-    req.on('data', data => { body += data; });
+    req.on('data', data => {
+        body += data;
+    });
 
     req.on('end', () => {
 
@@ -26,7 +30,7 @@ function registrationApi(req, res){
 
                     if(!err){
     
-                        //encrypt passwords
+                        //encrypt passwords with salt
                         bcrypt.hash(body.contrasena, salt, function(err, hash){
     
                             if(!err){
@@ -45,6 +49,7 @@ function registrationApi(req, res){
                                     'tiempo': new Date()
                                 }
 
+                                /**Saving user data */
                                 query.saveUser(dataToSave, (doc) => {
                                     if(doc !== null){
                                         //Token to store in the cookie
@@ -52,10 +57,9 @@ function registrationApi(req, res){
 
                                         var mycookie = genCookie(regToken);
 
-
                                         //setting the response
                                         console.log('csrf passed');
-                                        res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
+                                        res.writeHead(200, header(mycookie));
                                         res.write(JSON.stringify({ nombre: doc.usuario}));
                                         res.end();
                                     }
@@ -65,15 +69,16 @@ function registrationApi(req, res){
     
                         })
     
-                    } else { console.log('error at bcrypt.genSalt'); }
+                    } else { 
+                        console.log('error at bcrypt.genSalt'); 
+                    }
     
                 });
 
             } else {
 
                 console.log('csrf NOT passed');
-                res.writeHead(404, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-                body = '';
+                res.writeHead(404, header(clearCookie()));
                 res.end();
 
             }
@@ -86,66 +91,61 @@ function registrationApi(req, res){
 
 /**Handle the login request */
 function loginApi(req, res){
+    /**var to store the request body*/
     var body = '';
-    req.on('data', data => { body += data; });
+
+    req.on('data', data => {
+        /**Storing the body data */
+        body += data;
+    });
 
     req.on('end', () => {
         
-        if(body){
+        /**Parsing the body to make it readable */
         body = JSON.parse(body);
 
+        /**Checkin if the user exists */
         query.checkUser(body.correo, function(doc){
 
             if(doc){
+                /**Creating a token with the user data */
                 var loginToken = jwt.createJWT(doc);
+
+                /**Storing the token in a cookie */
                 var mycookie = genCookie(loginToken);
 
+                /**Checking the csrf protection */
                 if( csrf.verify(req.csrf.secret, body.csrf) ){
 
                     console.log('login csrf passed'); console.log('Trying to login',body.correo);
-                    if(body.correo === doc.correo){
 
-                        bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
+                    /**Checking the paasword matching */
+                    bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
 
-                            if( auth === true ){
-                                res.writeHead(200, { 'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8' });
-                                res.write(JSON.stringify({ nombre: doc.nombre}));
-                            } else {
-                                console.log('Problemas con las credenciales')
-                                res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
+                        if( auth === true ){
+                            res.writeHead(200, header(mycookie));
+                            res.write(JSON.stringify({ nombre: doc.nombre}));
+                        } else {
+                            console.log('Problemas con las credenciales')
+                            res.writeHead(401, header(clearCookie()));
 
-                            }
-                            body = ''
-                            res.end();
-
-                        })
-
-                    } else {
-                        console.log('login csrf NOT passed');
-                        res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-                        body = ''
+                        }
                         res.end();
-                    }
+
+                    })
 
                 } else {
                     console.log('login csrf NOT passed');
-                    res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-                    body = ''
+                    res.writeHead(401, header(clearCookie()));
                     res.end();
 
                 }
             } else {
-                res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-                body = ''
+                res.writeHead(401, header(clearCookie()));
                 res.end()
             }
 
         });
-      } else {
-        res.writeHead(401, { 'Set-Cookie': clearCookie(),'Content-Type': 'application/json; charset=utf-8' });
-        body = ''
-        res.end()
-      }
     });
 
 }
@@ -164,6 +164,10 @@ function clearCookie(){
         expires: new Date(1), // 1 week
         path: '/'
     })
+}
+
+function header(cookie){
+    return {'Set-Cookie': cookie,'Content-Type': 'application/json; charset=utf-8'}
 }
 
 module.exports = {
