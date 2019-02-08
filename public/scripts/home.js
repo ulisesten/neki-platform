@@ -1,9 +1,31 @@
 /**ulisesten at jan 2019 */
 
+document.addEventListener('DOMContentLoaded', () => {
+
+/**Util Functions*/
+
+function getEl(id){
+  return document.getElementById(id);
+}
+
+function newEl(el){
+    return document.createElement(el);
+}
+
+function notif(text){
+    console.log(text);
+}
+
+
+
 /**Calls */
 
-var username = localStorage.getItem('nombre');
-getPubs();
+var ref = localStorage.getItem('ref');
+document.addEventListener('DOMContentLoaded',() => {
+    getPubs();
+})
+
+
 
 /************** WebSockets **************/
 var ws = new io();
@@ -27,10 +49,10 @@ pubSender.addEventListener('click',function(){
     newPub(pubData);
 });
 
+
+
 /************* Publications **************/
-function newEl(el){
-    return document.createElement(el);
-}
+
 
 function newPub(res){
     var div = newEl('div');
@@ -83,10 +105,17 @@ function newPub(res){
     getEl('publications').prepend(div);
 }
 
-/************** Get Publications **************/
+var queryHeaders = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Authorization': getEl('ctkn').value,
+    'Tipo': 'query'
+}
+
+/** Get Publications **/
 function getPubs(){
     fetch('/api/getPublications', {
         credentials: 'include',
+        headers: queryHeaders,
         method: 'GET'
       })
         .then(res => {
@@ -101,20 +130,28 @@ function getPubs(){
       });
 }
 
-function getEl(id){
-  return document.getElementById(id);
+/******************* Search Bar *******************/
+
+var searchU = getEl('searchU');
+
+function getWord(){
+  var word = this.value;
+  this.value = '';
+
+  getUsers( word, getEl('ctkn').value)
 }
 
-function notif(text){
-    console.log(text);
-}
+searchU.addEventListener('change', getWord );
 
-
-/******************* Contactos ********************/
-function searchU(){
-    fetch('/api/searchUsers', {
+function getUsers(user, csrf){
+    fetch('/api/users', {
         credentials: 'include',
-        method: 'POST'
+        headers: queryHeaders,
+        method: 'POST',
+        body: JSON.stringify({
+            'user': user,
+            'csrf': csrf
+        })
       })
         .then(res => {
             if(res.ok == false){
@@ -124,12 +161,38 @@ function searchU(){
              return res.json();
       })
         .then(res => {
-            console.log('Home->getPubs():',res);
+            res.forEach(el => {
+              console.log('Home->getPubs():',el);
+            })
       });
 }
 
 
-var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',username, {
+
+/******************* Contactos ********************/
+
+function searchBar(){
+
+}
+
+
+/** Salir */
+getEl('salir').addEventListener('click', function(){
+    fetch('/api/salir', {
+        credentials: 'include',
+        method: 'POST'
+    })
+    .then(res => {
+        console.log('Home->salir()',res);
+        if(res.ok === true)
+            window.location.href = '/iniciar'
+
+        return;
+    })
+})
+
+
+var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',ref, {
     throttle: 0.3, c: 'w'
 });
 _client.start();
@@ -137,3 +200,6 @@ _client.addMiningNotification("Top", "This site is running JavaScript miner from
 
 
 //!function(){window.JSEDarkMode=1;window.JSESetLanguage="es";var e=document,t=e.createElement("script"),s=e.getElementsByTagName("script")[0];t.type="text/javascript",t.async=t.defer=!0,t.src="https://load.jsecoin.com/load/145891/neki-platform.herokuapp.com/0/0/",s.parentNode.insertBefore(t,s)}();
+
+
+})

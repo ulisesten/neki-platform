@@ -1,14 +1,15 @@
 /**ulisesten */
 
 var csrf = require('csrf-token');
+const { SECRET } = require('../config');
 
 function newToken(){
-    var secret = 'uuno1234hgdygjhh';
-    return { secret: secret, token: csrf.createSync(secret, 10) };
+
+    return csrf.createSync(SECRET, 10);
 }
 
-function verify(secret, token){
-    return csrf.verifySync('uuno1234hgdygjhh',token);
+function verify(token){
+    return csrf.verifySync( SECRET , token );
 }
 
 module.exports = {

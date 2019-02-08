@@ -4,7 +4,7 @@ var csrf = require('../utils/csrf-tokens'),
     query = require('../database/queries');
 
 /**Handle the login request */
-function loginApi(req, res){
+function searchUsers(req, res){
     /**var to store the request body*/
     var body = '';
 

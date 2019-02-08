@@ -26,11 +26,6 @@ function getCount(cb){
     });
 }
 
-function setUser(){
-    var usuario = new model.User({
-        //Info del usuario
-    });
-}
 
 function checkUser(correo, callback){
     function checking(){
@@ -42,11 +37,17 @@ function checkUser(correo, callback){
                     done(null);
                 } else {
                     console.log('usuario existe')
+
+                    if(!res.ref){
+                        res.ref='platform'
+                    }
+
                     done({
                         id: res.id,
                         nombre: res.usuario,
                         correo: res.correo,
                         clave: res.clave,
+                        ref: res.ref,
                         _id: res._id});
                 }
             })
@@ -75,9 +76,35 @@ function saveUser(data, cb){
         });
 }
 
+
+function matchingUsers(nombre, callback){
+    function checking(){
+        return new Promise(function (done) {
+
+            var regex = new RegExp(nombre,'gi')
+            model.User.find({ 'usuario': regex},'id usuario -_id', function(err, res){
+
+                if(!res){
+                    console.log('no hay coincidencias',err)
+                    done(null);
+                } else {
+                    console.log('Se encontraron coincidencias')
+
+                    done(res);
+                }
+            })
+        })
+    }
+
+    checking().then(function(res){
+        callback(res);
+    })
+}
+
 module.exports = {
     setCount,
     getCount,
     checkUser,
-    saveUser
+    saveUser,
+    matchingUsers
 }

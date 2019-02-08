@@ -30,7 +30,8 @@ function register(correo, pass, csrf){
         body: JSON.stringify({
             correo: correo,
             contrasena: pass,
-            csrf: csrf })
+            csrf: csrf
+        })
     })
 
     fetch(req)
@@ -45,7 +46,7 @@ function register(correo, pass, csrf){
         })
         .then(res => {
             if(res !== null){
-                localStorage.setItem("nombre", res.nombre);
+                localStorage.setItem("ref", res.ref);
                 window.location.href = '/';
             } else 
                 return;

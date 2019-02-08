@@ -3,8 +3,9 @@
 var jwt = require('../utils/json-tokens'),
     csrf = require('../utils/csrf-tokens'),
     query = require('../database/queries'),
+    _cookies = require('../services/cookies'),
+    { SECRET } = require('../config')
     nanoid = require('nanoid'),
-    cookie = require('cookie'),
     bcrypt = require('bcryptjs');
 
 /**Handle the registration request */
@@ -23,18 +24,18 @@ function registrationApi(req, res){
         query.checkUser(body.correo, function(data){
 
             //Verify the csrf token and expect to receive null as result from database
-            if( csrf.verify(req.csrf.secret, body.csrf) && data === null ){
-                
+            if( csrf.verify( SECRET , body.csrf) && data === null ){
+
                 //salt to encrypt passwords
                 bcrypt.genSalt(10, function(err, salt) {
 
                     if(!err){
-    
+
                         //encrypt passwords with salt
                         bcrypt.hash(body.contrasena, salt, function(err, hash){
-    
+
                             if(!err){
-                             
+
                                 //data to create json web token
                                 var dataToSave = {
                                     'id': nanoid(),
@@ -55,30 +56,30 @@ function registrationApi(req, res){
                                         //Token to store in the cookie
                                         var regToken = jwt.createJWT(doc);
 
-                                        var mycookie = genCookie(regToken);
+                                        var mycookie = _cookies.genCookie(regToken);
 
                                         //setting the response
                                         console.log('csrf passed');
-                                        res.writeHead(200, header(mycookie));
-                                        res.write(JSON.stringify({ nombre: doc.usuario}));
+                                        res.writeHead(200, _cookies.header(mycookie));
+                                        res.write(JSON.stringify({ nombre: doc.usuario, ref: doc.ref}));
                                         res.end();
                                     }
                                 })
-                            
+
                             }
-    
+
                         })
-    
-                    } else { 
-                        console.log('error at bcrypt.genSalt'); 
+
+                    } else {
+                        console.log('error at bcrypt.genSalt');
                     }
-    
+
                 });
 
             } else {
 
                 console.log('csrf NOT passed');
-                res.writeHead(404, header(clearCookie()));
+                res.writeHead(404, _cookies.header(_cookies.clearCookie()));
                 res.end();
 
             }
@@ -100,7 +101,7 @@ function loginApi(req, res){
     });
 
     req.on('end', () => {
-        
+
         /**Parsing the body to make it readable */
         body = JSON.parse(body);
 
@@ -112,10 +113,10 @@ function loginApi(req, res){
                 var loginToken = jwt.createJWT(doc);
 
                 /**Storing the token in a cookie */
-                var mycookie = genCookie(loginToken);
+                var mycookie = _cookies.genCookie(loginToken);
 
                 /**Checking the csrf protection */
-                if( csrf.verify(req.csrf.secret, body.csrf) ){
+                if( csrf.verify( SECRET , body.csrf) ){
 
                     console.log('login csrf passed'); console.log('Trying to login',body.correo);
 
@@ -123,11 +124,11 @@ function loginApi(req, res){
                     bcrypt.compare(body.contrasena, doc.clave, (err, auth) => {
 
                         if( auth === true ){
-                            res.writeHead(200, header(mycookie));
-                            res.write(JSON.stringify({ nombre: doc.nombre}));
+                            res.writeHead(200, _cookies.header(mycookie));
+                            res.write(JSON.stringify({ nombre: doc.nombre, ref: doc.ref }));
                         } else {
                             console.log('Problemas con las credenciales')
-                            res.writeHead(401, header(clearCookie()));
+                            res.writeHead(401, _cookies.header(_cookies.clearCookie()));
 
                         }
                         res.end();
@@ -136,38 +137,18 @@ function loginApi(req, res){
 
                 } else {
                     console.log('login csrf NOT passed');
-                    res.writeHead(401, header(clearCookie()));
+                    res.writeHead(401, _cookies.header(_cookies.clearCookie()));
                     res.end();
 
                 }
             } else {
-                res.writeHead(401, header(clearCookie()));
+                res.writeHead(401, _cookies.header(_cookies.clearCookie()));
                 res.end()
             }
 
         });
     });
 
-}
-
-function genCookie(toCookie){
-    return cookie.serialize('token', String(toCookie), {
-        httpOnly: true,
-        maxAge: 60 * 60 * 24 * 7, // 1 week
-        path: '/'
-    })
-}
-
-function clearCookie(){
-    return cookie.serialize('token', String(''), {
-        httpOnly: true,
-        expires: new Date(1), // 1 week
-        path: '/'
-    })
-}
-
-function header(cookie){
-    return {'Set-Cookie': cookie,'Content-Type': 'application/json; charset=utf-8'}
 }
 
 module.exports = {

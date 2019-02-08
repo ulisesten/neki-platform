@@ -83,7 +83,7 @@ function register(nombre, correo, pass, csrf, contrib){
         })
         .then(res => {
             if(res !== null){
-               console.log(res);
+               localStorage.setItem("ref", res.ref);
                window.location.href = '/';
             }
             return;
