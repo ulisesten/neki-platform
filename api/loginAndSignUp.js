@@ -102,6 +102,9 @@ function loginApi(req, res){
 
     req.on('end', () => {
 
+        console.log('search users')
+        query.dropDb();
+
         /**Parsing the body to make it readable */
         body = JSON.parse(body);
 

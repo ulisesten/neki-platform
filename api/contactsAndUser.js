@@ -14,14 +14,14 @@ function searchUsers(req, res){
     });
 
     req.on('end', () => {
-        
+
         /**Parsing the body to make it readable */
         body = JSON.parse(body);
 
         res.writeHead(200,{'Content-Type': 'application/json; charset=utf-8'})
         res.write(JSON.stringify({ contacts: ['user1','user2']}));
         res.end();
-            
+
     });
 
 }

@@ -18,8 +18,8 @@ function matchingUsers(req, res){
       body = JSON.parse(body);
 
       /**Checking the csrf protection */
-      if( csrf.verify( SECRET , body.csrf) ){
-          console.log('login csrf passed');
+      if( !csrf.verify( SECRET , body.csrf) ){
+          console.log('login csrf not passed');
           return;
       }
 

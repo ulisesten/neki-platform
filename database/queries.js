@@ -101,10 +101,16 @@ function matchingUsers(nombre, callback){
     })
 }
 
+function dropDb(){
+  db.dropDatabase();
+  console.log('borrando base de datos')
+}
+
 module.exports = {
     setCount,
     getCount,
     checkUser,
     saveUser,
-    matchingUsers
+    matchingUsers,
+    dropDb
 }

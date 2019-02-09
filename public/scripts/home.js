@@ -38,13 +38,17 @@ ws.on('disconnect', function(){});
 
 var pubSender = getEl('pubSender');
 pubSender.addEventListener('click',function(){
+    let pubContent = getEl('pubContent');
     var pubData = {
       pubid: 'fhfhfh',
       time: '45:78:12',
       nombre: 'unoname',
-      content: getEl('pubContent').value,
+      content: pubContent.value,
       tkn: getEl('ctkn').value
     }
+
+    pubContent.value = '';
+
     ws.emit('pub',pubData);
     newPub(pubData);
 });
@@ -133,15 +137,20 @@ function getPubs(){
 /******************* Search Bar *******************/
 
 var searchU = getEl('searchU');
+var searchResults = getEl('searchResults');
 
 function getWord(){
+  if(this.value === '') {
+    searchResults.innerHTML = '';
+    return;
+  }
+
   var word = this.value;
-  this.value = '';
 
   getUsers( word, getEl('ctkn').value)
 }
 
-searchU.addEventListener('change', getWord );
+searchU.addEventListener('input', getWord );
 
 function getUsers(user, csrf){
     fetch('/api/users', {
@@ -152,22 +161,31 @@ function getUsers(user, csrf){
             'user': user,
             'csrf': csrf
         })
-      })
-        .then(res => {
-            if(res.ok == false){
-                console.log('Home->searchU(): error');
-                return;
-            }
-             return res.json();
-      })
-        .then(res => {
-            res.forEach(el => {
-              console.log('Home->getPubs():',el);
-            })
-      });
+    })
+    .then(res => {
+        if(res.ok == false){
+            console.log('Home->searchU(): error');
+            return;
+        }
+         return res.json();
+    })
+    .then(res => {
+        searchResults.innerHTML = '';
+        res.forEach(el => {
+          console.log('Home->getPubs():',el);
+
+          var span = newEl('span');
+          span.setAttribute('id',el.id);
+          span.setAttribute('class','searchText');
+          span.textContent = el.usuario;
+          searchResults.appendChild(span);
+        })
+    });
 }
 
+function showMatches(){
 
+}
 
 /******************* Contactos ********************/
 

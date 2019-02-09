@@ -1,8 +1,12 @@
 *{padding: 0; margin: 0; border: 0; vertical-align: baseline; }
 
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+}
+
 /**HEADER*/
 .header {
-  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+  
   position: fixed;
   width: 100%;
   padding: 0.5rem;
@@ -113,13 +117,17 @@ main{
 
 /***************************** Right Section **********************************/
 .r-section {
-  padding: 5px;
+  padding: 8px;
 }
 
 .r-section-p {
   position: fixed;
   left:0;
   top: 60px;
+}
+
+.searchText {
+  color: gray;
 }
 
 /************* GRID **************/
