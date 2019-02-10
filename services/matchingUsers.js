@@ -1,7 +1,6 @@
 /** ulisesten **/
 const csrf = require('../utils/csrf-tokens'),
-      query = require('../database/queries'),
-      {SECRET} = require('../config');
+      query = require('../database/queries');
 
 function matchingUsers(req, res){
   /**var to store the request body*/
@@ -18,7 +17,7 @@ function matchingUsers(req, res){
       body = JSON.parse(body);
 
       /**Checking the csrf protection */
-      if( !csrf.verify( SECRET , body.csrf) ){
+      if( !csrf.verify(body.csrf) ){
           console.log('login csrf not passed');
           return;
       }

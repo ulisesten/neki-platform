@@ -19,7 +19,7 @@ var PUBLIC = './public'
 /**Main Function */
 function app(req,res){
     /**Establishing csrf token for all routes */
-    req.csrf = vGlobal;
+    req.csrf = vGlobal.token;
 
     console.log(req.headers['tipo'])
 
@@ -52,7 +52,7 @@ function app(req,res){
 
         else
           if(url.parse(req.url,true).pathname === '/registrar'){
-            vGlobal.token = csrf.newToken()
+            vGlobal.token = csrf.newToken();
             /**Storing referrer id: ref in vGlobal.ref */
             vGlobal.ref = url.parse(req.url,true).query.ref || 'noref';
             /**HTML Registrar */

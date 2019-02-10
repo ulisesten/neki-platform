@@ -4,7 +4,7 @@ var csrf = require('csrf-token');
 const { SECRET } = require('../config');
 
 function newToken(){
-
+    console.log('secret', SECRET)
     return csrf.createSync(SECRET, 10);
 }
 

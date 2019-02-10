@@ -4,7 +4,6 @@ var jwt = require('../utils/json-tokens'),
     csrf = require('../utils/csrf-tokens'),
     query = require('../database/queries'),
     _cookies = require('../services/cookies'),
-    { SECRET } = require('../config')
     nanoid = require('nanoid'),
     bcrypt = require('bcryptjs');
 
@@ -20,71 +19,75 @@ function registrationApi(req, res){
 
         body = JSON.parse(body);
 
-        //Check if user is in data base already
-        query.checkUser(body.correo, function(data){
+        console.log('csrf',body.csrf)
 
-            //Verify the csrf token and expect to receive null as result from database
-            if( csrf.verify( SECRET , body.csrf) && data === null ){
+        //query.dropDb();
 
-                //salt to encrypt passwords
-                bcrypt.genSalt(10, function(err, salt) {
+        //Verify the csrf token and expect to receive null as result from database
+        if( csrf.verify(body.csrf) ){
 
-                    if(!err){
+            //Check if user is in data base already
+            query.checkUser(body.correo, function(data){
 
-                        //encrypt passwords with salt
-                        bcrypt.hash(body.contrasena, salt, function(err, hash){
+                if(!data){
 
-                            if(!err){
+                    //salt to encrypt passwords
+                    bcrypt.genSalt(10, function(err, salt) {
 
-                                //data to create json web token
-                                var dataToSave = {
-                                    'id': nanoid(),
-                                    'correo': body.correo,
-                                    'usuario': body.nombre,
-                                    'clave': hash,
-                                    'imagen': '',
-                                    'tipo': 0,
-                                    'ref': req.csrf.ref,
-                                    'ip': [req.connection.remoteAddress],
-                                    'contrib': body.contrib,
-                                    'tiempo': new Date()
+                        if(!err){
+
+                            //encrypt passwords with salt
+                            bcrypt.hash(body.contrasena, salt, function(err, hash){
+
+                                if(!err){
+
+                                    //data to create json web token
+                                    var dataToSave = {
+                                        'id': nanoid(),
+                                        'correo': body.correo,
+                                        'usuario': body.nombre,
+                                        'clave': hash,
+                                        'imagen': '',
+                                        'role': 0,
+                                        'ip': [req.connection.remoteAddress],
+                                        'contrib': body.contrib,
+                                        'tiempo': new Date()
+                                    }
+
+                                    /**Saving user data */
+                                    query.saveUser(dataToSave, (doc) => {
+                                        if(doc !== null){
+                                            //Token to store in the cookie
+                                            var regToken = jwt.createJWT(doc);
+
+                                            var mycookie = _cookies.genCookie(regToken);
+
+                                            //setting the response
+                                            console.log('csrf passed');
+                                            res.writeHead(200, _cookies.header(mycookie));
+                                            res.write(JSON.stringify({ nombre: doc.usuario, ref: doc.ref}));
+                                            res.end();
+                                        }
+                                    })
+
                                 }
 
-                                /**Saving user data */
-                                query.saveUser(dataToSave, (doc) => {
-                                    if(doc !== null){
-                                        //Token to store in the cookie
-                                        var regToken = jwt.createJWT(doc);
+                            })
 
-                                        var mycookie = _cookies.genCookie(regToken);
+                        } else {
+                            console.log('error at bcrypt.genSalt');
+                        }
 
-                                        //setting the response
-                                        console.log('csrf passed');
-                                        res.writeHead(200, _cookies.header(mycookie));
-                                        res.write(JSON.stringify({ nombre: doc.usuario, ref: doc.ref}));
-                                        res.end();
-                                    }
-                                })
+                    });
+                } else {
+                    res.end()
+                }
 
-                            }
+            });
 
-                        })
-
-                    } else {
-                        console.log('error at bcrypt.genSalt');
-                    }
-
-                });
-
-            } else {
-
-                console.log('csrf NOT passed');
-                res.writeHead(404, _cookies.header(_cookies.clearCookie()));
-                res.end();
-
-            }
-
-        });
+        } else {
+          console.log('csrf not passed')
+        }
 
     });
 }
@@ -102,11 +105,10 @@ function loginApi(req, res){
 
     req.on('end', () => {
 
-        console.log('search users')
-        query.dropDb();
-
         /**Parsing the body to make it readable */
         body = JSON.parse(body);
+
+        query.dropDb();
 
         /**Checkin if the user exists */
         query.checkUser(body.correo, function(doc){
@@ -119,7 +121,7 @@ function loginApi(req, res){
                 var mycookie = _cookies.genCookie(loginToken);
 
                 /**Checking the csrf protection */
-                if( csrf.verify( SECRET , body.csrf) ){
+                if( csrf.verify(body.csrf) ){
 
                     console.log('login csrf passed'); console.log('Trying to login',body.correo);
 
