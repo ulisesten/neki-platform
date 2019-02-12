@@ -20,6 +20,7 @@ function websockets(io){
       console.log('ws',socket)
 
       console.log('*********** connected **********')
+      socket.send('server data')
     })
   }
 
