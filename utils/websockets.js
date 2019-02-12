@@ -17,10 +17,14 @@ function websockets(io){
     ws = io;
 
     ws.on('connection', socket => {
-      console.log('ws',socket)
+      console.log('ws',socket.server)
 
       console.log('*********** connected **********')
       socket.send('server data')
+
+      socket.on('message', function incoming(data) {
+          console.log(JSON.parse(data));
+      });
     })
   }
 

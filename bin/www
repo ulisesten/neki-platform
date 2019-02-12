@@ -12,6 +12,7 @@ var server = http.createServer(app);
 const WebSocket = require('ws');
 
 var ws = new WebSocket.Server({server, path: '/'})
+//console.log('creating ws',ws)
 
 websockets(ws);
 
