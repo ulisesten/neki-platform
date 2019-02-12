@@ -46,7 +46,7 @@ send_btn.addEventListener('click',() => {
 
     if(getEl('contrib').checked){ mContrib = true; }
 
-    if(mNombre !== ""){ 
+    if(mNombre !== ""){
 
         register(mNombre, mCorreo, mClave, mCtkn, mContrib);
     }
@@ -83,7 +83,7 @@ function register(nombre, correo, pass, csrf, contrib){
         })
         .then(res => {
             if(res !== null){
-               localStorage.setItem("ref", res.ref);
+               localStorage.setItem("usuario", res.nombre);
                window.location.href = '/';
             }
             return;
@@ -97,4 +97,3 @@ function getEl(id){
 function notif(text){
     console.log(text);
 }
-

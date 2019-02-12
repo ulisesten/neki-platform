@@ -3,12 +3,11 @@
 
 var fs = require('fs'),
     util = require('./utils/loadFiles'),
-    cookies = require('./services/cookies'),
+    _cookies = require('./services/cookies'),
     access = require('./utils/accessControl'),
     csrf = require('./utils/csrf-tokens'),
     api = require('./api/loginAndSignUp'),
-    matchingUsers = require('./services/matchingUsers'),
-    url = require('url');
+    matchingUsers = require('./services/matchingUsers');
 
     const { SECRET } = require('./config');
 
@@ -20,8 +19,6 @@ var PUBLIC = './public'
 function app(req,res){
     /**Establishing csrf token for all routes */
     req.csrf = vGlobal.token;
-
-    console.log(req.headers['tipo'])
 
     /**Requests */
     if(req.method === 'GET'){
@@ -51,10 +48,9 @@ function app(req,res){
           }
 
         else
-          if(url.parse(req.url,true).pathname === '/registrar'){
+          if(req.url === '/registrar'){
             vGlobal.token = csrf.newToken();
-            /**Storing referrer id: ref in vGlobal.ref */
-            vGlobal.ref = url.parse(req.url,true).query.ref || 'noref';
+
             /**HTML Registrar */
             util.loadView('./views/registrar.html', res, vGlobal.token)
           }

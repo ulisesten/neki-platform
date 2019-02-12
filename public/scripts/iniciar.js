@@ -8,7 +8,7 @@ send_btn.addEventListener('click',() => {
         mClave = getEl('clave').value,
         mCtkn = getEl('ctkn').value;
 
-    if(mCorreo !== "" && mClave !== ""){ 
+    if(mCorreo !== "" && mClave !== ""){
         register(mCorreo, mClave, mCtkn);
     }
     else { notif('La información no es correcta'); }
@@ -46,9 +46,9 @@ function register(correo, pass, csrf){
         })
         .then(res => {
             if(res !== null){
-                localStorage.setItem("ref", res.ref);
+                localStorage.setItem("usuario", res.nombre);
                 window.location.href = '/';
-            } else 
+            } else
                 return;
         });
 }

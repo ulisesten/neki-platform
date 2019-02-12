@@ -38,16 +38,11 @@ function checkUser(correo, callback){
                 } else {
                     console.log('usuario existe')
 
-                    if(!res.ref){
-                        res.ref='platform'
-                    }
-
                     done({
                         id: res.id,
                         nombre: res.usuario,
                         correo: res.correo,
                         clave: res.clave,
-                        ref: res.ref,
                         _id: res._id});
                 }
             })

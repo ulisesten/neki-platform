@@ -65,9 +65,10 @@ function registrationApi(req, res){
                                             //setting the response
                                             console.log('csrf passed');
                                             res.writeHead(200, _cookies.header(mycookie));
-                                            res.write(JSON.stringify({ nombre: doc.usuario, ref: doc.ref}));
+                                            res.write(JSON.stringify({ nombre: doc.usuario, ref: 'platform'}));
                                             res.end();
                                         }
+
                                     })
 
                                 }
@@ -79,7 +80,9 @@ function registrationApi(req, res){
                         }
 
                     });
+
                 } else {
+                    res.writeHead(401);
                     res.end()
                 }
 
@@ -90,6 +93,7 @@ function registrationApi(req, res){
         }
 
     });
+
 }
 
 
@@ -107,8 +111,6 @@ function loginApi(req, res){
 
         /**Parsing the body to make it readable */
         body = JSON.parse(body);
-
-        query.dropDb();
 
         /**Checkin if the user exists */
         query.checkUser(body.correo, function(doc){
@@ -130,7 +132,7 @@ function loginApi(req, res){
 
                         if( auth === true ){
                             res.writeHead(200, _cookies.header(mycookie));
-                            res.write(JSON.stringify({ nombre: doc.nombre, ref: doc.ref }));
+                            res.write(JSON.stringify({ nombre: doc.nombre, ref: 'platform' }));
                         } else {
                             console.log('Problemas con las credenciales')
                             res.writeHead(401, _cookies.header(_cookies.clearCookie()));
