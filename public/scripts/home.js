@@ -55,7 +55,8 @@ pubSender.addEventListener('click',function(){
     newPub(pubData);
 });*/
 
-var url = 'wss://localhost:8080';
+var href = window.location.href;
+var url = href.replace('http','ws');
 
 var ws = new WebSocket(url);
 
