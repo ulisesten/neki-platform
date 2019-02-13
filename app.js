@@ -42,12 +42,6 @@ function app(req,res){
           }
 
         else
-          if(req.url === '/scripts/socket.io.js'){
-            /**SCRIPT */
-            util.loadStatic(PUBLIC+'/scripts/socket.io.js', res, req.headers['accept-encoding'])
-          }
-
-        else
           if(req.url === '/registrar'){
             vGlobal.token = csrf.newToken();
 

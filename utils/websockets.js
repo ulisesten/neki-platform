@@ -17,7 +17,7 @@ function websockets(io){
     ws = io;
 
     ws.on('connection', socket => {
-      console.log('ws',socket.server)
+      //console.log('ws',socket)
 
       console.log('*********** connected **********')
       socket.send('server data')
@@ -26,6 +26,7 @@ function websockets(io){
           console.log(JSON.parse(data));
       });
     })
+
   }
 
   module.exports = websockets;

@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 label{margin: 5px 0}
 
 input[type="text"],[type="password"]{
@@ -45,19 +50,72 @@ input[type="button"]{
     cursor: pointer;}
 /**GRID*/
 #main{margin: 0px;}
+
 .panel{padding: 5px;}
 
 @media only screen and (min-width: 300px){
-    #main { position: absolute; left: 0; top: 40%; width: 100%; }}
+    #main { position: absolute; left: 0; top: 35%; width: 100%; }}
 
 @media only screen and (min-width: 600px){
-    #main { position: absolute; left: 33%; top: 40%; width: 300px; }}
+    #main { position: absolute; left: 33%; top: 35%; width: 300px; }}
 
 /**COMMON*/
 body{
-  padding: 20px 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;}
 
-a{color: black;
+
+  /**HEADER*/
+  .header {
+
+    position: fixed;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  .header-container {
+      width: 85%;
+      margin: 0 auto;
+  }
+
+  .logo-nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .logo {
+      letter-spacing: 2px;
+      font-size: 2em;
+  }
+
+  .navigation ul{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+  }
+
+      .navigation ul li {
+          display: inline-block;
+      }
+
+          .navigation ul li a {
+              display: block;
+              padding: 0.5rem 1rem;
+              transition: all 0.4s linear;
+              border-radius: 3px;
+          }
+              .navigation ul li a:hover {
+                  background-color: black;
+                  color: white;
+              }
+
+
+/*****************/
+.binevenida {
+  margin: 10px 5px;
+}
+
+a {
   text-decoration: none;
-  float: right; }
+  color: black;
+}
