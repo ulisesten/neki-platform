@@ -23,7 +23,19 @@ var User = mongoose
                     tiempo: String
                 },{collection: 'usuarios'}))
 
+var Pub = mongoose
+                .model('pubs',new Schema({
+                    id: String,
+                    usuario: String,
+                    content: String,
+                    tiempo: String,
+                    mg: Number,
+                    nmg: Number,
+                    coments: Number
+                },{collection: 'publicaciones'}))
+
 module.exports = {
     Count,
-    User
+    User,
+    Pub
 }

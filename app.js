@@ -4,7 +4,7 @@
 var fs = require('fs'),
     util = require('./utils/loadFiles'),
     _cookies = require('./services/cookies'),
-    access = require('./utils/accessControl'),
+    access = require('./utils/getHome'),
     csrf = require('./utils/csrf-tokens'),
     api = require('./api/loginAndSignUp'),
     matchingUsers = require('./services/matchingUsers');
@@ -89,9 +89,14 @@ function app(req,res){
               api.registrationApi(req, res)
             }
 
-            else
+          else
             if(req.url == '/api/users'){
               matchingUsers(req, res);
+            }
+
+          else
+            if(req.url == '/api/wsAuth'){
+              api.wsAuth(req,res);
             }
 
           else

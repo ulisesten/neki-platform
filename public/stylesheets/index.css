@@ -6,7 +6,7 @@ body {
 
 /**HEADER*/
 .header {
-  
+
   position: fixed;
   width: 100%;
   padding: 0.5rem;
@@ -64,11 +64,12 @@ input[type="button"]{
 
 .time1{
     font-size: 9px;
-    margin: 2px;
+    margin: 5px;
 }
 
 .enlace1{
     text-decoration: none;
+    font-weight: 600;
 }
 
 /******************************** Main Section ********************************/
@@ -90,7 +91,7 @@ main{
 .pub_txt {
     width: 100%;
     border-style:none;
-    /*color: white;*/
+    /*color: gray;*/
     /*background-color: #313131;*/
     resize:none;
     overflow: hidden;
@@ -101,12 +102,13 @@ main{
 /****** Publications ******/
 
 .pubs{
-    padding: 3px;
+    padding: 8px;
     margin-bottom: 5px;
 }
 
 .content{
-    margin: 2px;
+    margin: 10px 0;
+    color: #272727;
 }
 
 .reacciones {

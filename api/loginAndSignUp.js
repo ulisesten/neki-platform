@@ -4,6 +4,7 @@ var jwt = require('../utils/json-tokens'),
     csrf = require('../utils/csrf-tokens'),
     query = require('../database/queries'),
     _cookies = require('../services/cookies'),
+    cookieParser = require('cookie'),
     nanoid = require('nanoid'),
     bcrypt = require('bcryptjs');
 
@@ -158,7 +159,28 @@ function loginApi(req, res){
 
 }
 
+function wsAuth(req,res){
+    var body = '';
+
+    req.on('data', data => {
+        /**Storing the body data */
+        body += data;
+    });
+
+    req.on('end', () => {
+
+        /**Parsing the body to make it readable */
+        body = JSON.parse(body);
+        if( csrf.verify(body.csrf) ){
+            var parsedCookie = cookieParser.parse(String(req.headers.cookie));
+            res.write(JSON.stringify({ wsAuth: parsedCookie.token }));
+            res.end();
+        }
+    })
+}
+
 module.exports = {
     registrationApi,
-    loginApi
+    loginApi,
+    wsAuth
 }

@@ -5,6 +5,7 @@ var db = require('./connect'),
 
 /***/
 var user = db.collection('usuarios');
+var pub = db.collection('publicaciones')
 
 function setCount(ip, date){
     var count = new model.Count({
@@ -96,10 +97,26 @@ function matchingUsers(nombre, callback){
     })
 }
 
-function dropDb(){
+
+
+function savePub(data, cb){
+    var info = new model.Pub(data);
+
+    info.save((err, res) => {
+            if (err) {
+                console.log('savePub: Error al intentar guardar',error);
+                cb(null);
+            } else {
+                console.log('savePub: La siguiente publicaci_on se guard_o correctamente', res.id);
+                cb(res);
+            }
+        });
+}
+
+/**function dropDb(){
   db.dropDatabase();
   console.log('borrando base de datos')
-}
+}*/
 
 module.exports = {
     setCount,
@@ -107,5 +124,5 @@ module.exports = {
     checkUser,
     saveUser,
     matchingUsers,
-    dropDb
+    savePub
 }

