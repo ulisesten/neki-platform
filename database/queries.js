@@ -113,6 +113,30 @@ function savePub(data, cb){
         });
 }
 
+function matchingPubs(nombre, callback){
+    function checking(){
+        return new Promise(function (done) {
+
+            //var regex = new RegExp(nombre,'gi')
+            model.Pub.find({ 'usuario': nombre},'-_id', function(err, res){
+
+                if(!res){
+                    console.log('no hay publicaciones',err)
+                    done(null);
+                } else {
+                    console.log('Se encontraron publicaciones')
+
+                    done(res);
+                }
+            })
+        })
+    }
+
+    checking().then(function(res){
+        callback(res);
+    })
+}
+
 /**function dropDb(){
   db.dropDatabase();
   console.log('borrando base de datos')
@@ -124,5 +148,6 @@ module.exports = {
     checkUser,
     saveUser,
     matchingUsers,
-    savePub
+    savePub,
+    matchingPubs
 }
