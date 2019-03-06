@@ -125,11 +125,20 @@ main{
 .r-section-p {
   position: fixed;
   left:0;
-  top: 60px;
+  top: 70px;
+}
+
+.r-section-w{
+  background-color: black; 
 }
 
 .searchText {
   color: gray;
+}
+
+#searchU {
+    position: relative;
+    width: 100%;
 }
 
 /************* GRID **************/
@@ -137,21 +146,26 @@ main{
 @media only screen and (min-width: 368px) {
     .main-w{width: 100%;}
     .main-p{position: relative; left: 0%;}
+    .r-section-w{ width: 90%; display: none;}
 }
 /*Mediano*/
 @media only screen and (min-width: 568px) {
     .main-w{width: 61%;}
     .main-p{position: relative; left: 0%;}
+    .r-section-w{ width: 80%; display: none;}
+    
 }
 /*Largo*/
 @media only screen and (min-width: 768px) {
     .main-w{width: 49%;}
     .main-p{position: relative; left: 22%;}
+    .r-section-w{ width: 19.5%; display: block; }
 }
 /*Extra largo*/
 @media only screen and (min-width: 968px) {
     .main-w{width: 38.8%;}
     .main-p{position: relative; left: 18.4%;}
+    .r-section-w{ width: 16.5%; display: block; }
 }
 
 

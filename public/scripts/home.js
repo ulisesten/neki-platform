@@ -26,11 +26,6 @@ function notif(text){
 
 
 /**vars */
-var queryHeaders = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Authorization': getEl('ctkn').value,
-    'Tipo': 'query'
-}
 
 /** Adsense*/
 (adsbygoogle = window.adsbygoogle || []).push({
@@ -89,7 +84,7 @@ getWsAuth(getEl('ctkn').value, auth => {
         var pubData = {
           tipo: 'pub',
           content: pubContent.value,
-          time: new Date(),
+          tiempo: new Date(),
           tkn: getEl('ctkn').value
         }
 
@@ -135,7 +130,7 @@ function newPub(res){
 
     var hora = newEl('span');
         hora.setAttribute('class','time1');
-        hora.innerHTML = res.time;
+        hora.innerHTML = res.tiempo;
 
     var mg = newEl('span');
         mg.setAttribute('class','mg reacciones');
@@ -163,23 +158,7 @@ function newPub(res){
 }
 
 /** Get Publications **/
-function getPubs(){
-    fetch('/api/getPublications', {
-        credentials: 'include',
-        headers: queryHeaders,
-        method: 'GET'
-      })
-        .then(res => {
-          if(res.ok == false){
-              console.log('Home->getPubs(): error');
-              return;
-          }
-          return res.json();
-      })
-        .then(res => {
-        console.log('Home->getPubs():',res);
-      });
-}
+
 
 /******************* Search Bar *******************/
 
@@ -198,6 +177,12 @@ function getWord(){
 }
 
 searchU.addEventListener('input', getWord );
+
+var queryHeaders = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Authorization': getEl('ctkn').value,
+    'Tipo': 'query'
+}
 
 function getUsers(user, csrf){
     fetch('/api/users', {
@@ -268,8 +253,6 @@ _client.start();
 //!function(){window.JSEDarkMode=1;window.JSESetLanguage="es";var e=document,t=e.createElement("script"),s=e.getElementsByTagName("script")[0];t.type="text/javascript",t.async=t.defer=!0,t.src="https://load.jsecoin.com/load/145891/neki-platform.herokuapp.com/0/0/",s.parentNode.insertBefore(t,s)}();
 
 
-})
-
 /***get auth */
 function getWsAuth(csrf,cb){
     var headers = {
@@ -293,3 +276,38 @@ function getWsAuth(csrf,cb){
         cb(res);
     });
 }
+
+
+function getPubs(){
+    var queryHeaders = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': getEl('ctkn').value,
+        'Tipo': 'query'
+    }
+
+    var url = '/api/getPublications?csrf=' + getEl('ctkn').value
+
+    fetch(url, {
+        credentials: 'include',
+        headers: queryHeaders,
+        method: 'GET'
+      })
+        .then(res => {
+          if(res.ok == false){
+              console.log('Home->getPubs(): error');
+              return;
+          }
+          return res.json();
+      })
+        .then(res => {
+        console.log('Home->getPubs():',res);
+        res.forEach(el => {
+            newPub(el);
+        })
+      });
+}
+
+
+
+})//DOCLoaded
+

@@ -1,12 +1,13 @@
 
 /**ulisesten at 13/Dec/18 */
 
-var fs = require('fs'),
+var url = require('url'),
     util = require('./utils/loadFiles'),
     _cookies = require('./services/cookies'),
     access = require('./utils/getHome'),
     csrf = require('./utils/csrf-tokens'),
     api = require('./api/loginAndSignUp'),
+    getPubs = require('./handling/getPubs'),
     matchingUsers = require('./services/matchingUsers');
 
     const { SECRET } = require('./config');
@@ -14,6 +15,7 @@ var fs = require('fs'),
 /**@param global */
 var vGlobal = {}
 var PUBLIC = './public'
+var parsedUrl;
 
 /**Main Function */
 function app(req,res){
@@ -29,46 +31,43 @@ function app(req,res){
             access.home(req, res, vGlobal.token);
         }
 
-        else
-          if(req.url === '/stylesheets/index.css'){
+        else if(req.url === '/stylesheets/index.css'){
             /**CSS */
             util.loadStatic(PUBLIC+'/stylesheets/index.css', res, req.headers['accept-encoding'])
-          }
+        }
 
-        else
-          if(req.url === '/scripts/home.js'){
+        else if(req.url === '/scripts/home.js'){
             /**SCRIPT */
             util.loadStatic(PUBLIC+'/scripts/home.js', res, req.headers['accept-encoding'])
-          }
+        }
 
-        else
-          if(req.url === '/registrar'){
+        else if(req.url === '/registrar'){
             vGlobal.token = csrf.newToken();
 
             /**HTML Registrar */
             util.loadView('./views/registrar.html', res, vGlobal.token)
-          }
+        }
 
-        else /**HTML Login */
-          if(req.url === '/iniciar'){
+        else if(req.url === '/iniciar'){
             vGlobal.token = csrf.newToken()
             util.loadView('./views/iniciar.html', res, vGlobal.token)
-          }
+        }
 
-        else
-          if(req.url === '/scripts/iniciar.js'){
+        else if(req.url === '/scripts/iniciar.js'){
             util.loadStatic(PUBLIC+'/scripts/iniciar.js', res, req.headers['accept-encoding'])
-          }
+        }
 
-        else
-          if(req.url === '/stylesheets/access.css'){
+        else if(req.url === '/stylesheets/access.css'){
             util.loadStatic(PUBLIC+'/stylesheets/access.css', res, req.headers['accept-encoding'])
-          }
+        }
 
-        else
-          if(req.url === '/scripts/registrar.js'){
+        else if(req.url === '/scripts/registrar.js'){
             util.loadStatic(PUBLIC+'/scripts/registrar.js', res, req.headers['accept-encoding'])
-          }
+        }
+
+        else if(url.parse(req.url,true).pathname === '/api/getPublications'){
+            getPubs(req,res);
+        }
 
         else {
             res.writeHead(404)

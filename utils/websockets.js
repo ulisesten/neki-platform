@@ -1,5 +1,6 @@
 var query = require('../database/queries'),
-    jwt = require('./json-tokens');
+    jwt = require('./json-tokens'),
+    nanoid = require('nanoid');
 
 function websockets(io){
     /*io.on('connection', socket => {
@@ -23,6 +24,7 @@ function websockets(io){
       console.log('*********** connected **********')
       socket.send('server data')
 
+      var authorized;
       var allow = false;
       socket.on('message', function incoming(data) {
 
@@ -30,7 +32,7 @@ function websockets(io){
 
           /**Authentication*/
           if(data.tipo === 'auth'){
-            var authorized = jwt.decode(data.token);
+            authorized = jwt.decode(data.token);
             if(authorized){
               allow = true;
               console.log('User allowed')
@@ -47,13 +49,19 @@ function websockets(io){
               console.log('Nueva publicación')
 
               var toSave = {
-                id: 'dsgaspgas54sa57sa',
-                usuario: 'username',
+                id: nanoid(),
+                usuario: authorized.nombre,
                 content: data.content,
-                tiempo: data.time
+                tiempo: data.tiempo
               }
 
-              console.log(toSave);
+              query.savePub(toSave, (res) => {
+                  if(res) {
+                    console.log('La publicación se guardó correctamente:', res);
+                  } else {
+                    console.log('Error al guarar publicación');
+                  }
+              })
             }
 
           } else {
