@@ -32,6 +32,12 @@ var queryHeaders = {
     'Tipo': 'query'
 }
 
+/** Adsense*/
+(adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4431741015257754",
+          enable_page_level_ads: true
+});
+
 /************** WebSockets **************/
 /*var ws = new io();
 
@@ -86,9 +92,9 @@ getWsAuth(getEl('ctkn').value, auth => {
           time: new Date(),
           tkn: getEl('ctkn').value
         }
-    
+
         pubContent.value = '';
-    
+
         ws.send(JSON.stringify(pubData));
         newPub(pubData);
     });
