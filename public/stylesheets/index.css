@@ -129,7 +129,7 @@ main{
 }
 
 .r-section-w{
-  background-color: black; 
+  background-color: black;
 }
 
 .searchText {
@@ -139,6 +139,27 @@ main{
 #searchU {
     position: relative;
     width: 100%;
+}
+
+/**video*/
+.embed-container {
+height:0;
+margin-bottom:18px;
+overflow:hidden;
+padding-bottom:56.25%; /* 16/9 ratio */
+position:relative;
+min-width: 250px;
+}
+
+/**Adapta video embed*/
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+    height:100% !important;
+    left:0;
+    position:absolute;
+    top:0;
+    width:100% !important;
 }
 
 /************* GRID **************/
@@ -153,7 +174,7 @@ main{
     .main-w{width: 61%;}
     .main-p{position: relative; left: 0%;}
     .r-section-w{ width: 80%; display: none;}
-    
+
 }
 /*Largo*/
 @media only screen and (min-width: 768px) {
