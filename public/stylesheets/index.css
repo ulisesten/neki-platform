@@ -38,13 +38,13 @@ body {
         display: inline-block;
     }
 
-        .navigation ul li span {
+        .navigation ul li span,a {
             display: block;
             padding: 0.5rem 1rem;
             transition: all 0.4s linear;
             border-radius: 3px;
         }
-            .navigation ul li span:hover {
+            .navigation ul li span:hover,a:hover {
                 background-color: black;
                 color: white;
             }
@@ -129,7 +129,7 @@ main{
 }
 
 .r-section-w{
-  background-color: black; 
+  /*background-color: black; */
 }
 
 .searchText {

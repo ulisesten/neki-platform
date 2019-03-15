@@ -4,11 +4,14 @@
 var url = require('url'),
     util = require('./utils/loadFiles'),
     _cookies = require('./services/cookies'),
-    access = require('./utils/getHome'),
     csrf = require('./utils/csrf-tokens'),
     api = require('./api/loginAndSignUp'),
     getPubs = require('./handling/getPubs'),
     matchingUsers = require('./services/matchingUsers');
+
+/**Pages load */
+var homePage = require('./handling/getHome'),
+    publicPage = require('./handling/getPublicPage');
 
     const { SECRET } = require('./config');
 
@@ -28,7 +31,8 @@ function app(req,res){
         /********* GET METHOD **********/
         if(req.url === '/'){
             vGlobal.token = csrf.newToken()
-            access.home(req, res, vGlobal.token);
+            //homePage(req, res, vGlobal.token);
+            publicPage(req, res, vGlobal.token);
         }
 
         else if(req.url === '/stylesheets/index.css'){

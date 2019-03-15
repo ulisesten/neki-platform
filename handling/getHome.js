@@ -1,6 +1,6 @@
 ///import { util } from "./loadFiles";
-var util = require('./loadFiles'),
-    jwt = require('./json-tokens'),
+var util = require('../utils/loadFiles'),
+    jwt = require('../utils/json-tokens'),
     cookie = require('cookie');
 
 
@@ -22,6 +22,4 @@ function home(req, res, csrfToken){
 
 }
 
-module.exports = {
-    home
-}
+module.exports = home;
