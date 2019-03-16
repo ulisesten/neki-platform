@@ -118,7 +118,7 @@ function matchingPubs(nombre, callback){
         return new Promise(function (done) {
 
             //var regex = new RegExp(nombre,'gi')
-            model.Pub.find({ 'usuario': nombre},'-_id', function(err, res){
+            model.Pub.find({ 'usuario': nombre },'-_id', function(err, res){
 
                 if(!res){
                     console.log('no hay publicaciones',err)
@@ -137,6 +137,20 @@ function matchingPubs(nombre, callback){
     })
 }
 
+function setFriend(data, cb){
+    var friend = new model.Friend(data);
+
+    friend.save((err, res) => {
+        if (err) {
+            console.log('setFriend: Error al intentar guardar',error);
+            cb(null);
+        } else {
+            console.log('setFriend: La siguiente publicaci_on se guard_o correctamente', res.id);
+            cb(res);
+        }
+    });
+}
+
 /**function dropDb(){
   db.dropDatabase();
   console.log('borrando base de datos')
@@ -149,5 +163,6 @@ module.exports = {
     saveUser,
     matchingUsers,
     savePub,
-    matchingPubs
+    matchingPubs,
+    setFriend
 }

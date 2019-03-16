@@ -34,8 +34,17 @@ var Pub = mongoose
                     coments: Number
                 },{collection: 'publicaciones'}))
 
+var Friend = mongoose
+                .model('friends', new Schema({
+                    userid: String,
+                    user: String,
+                    friendId: String,
+                    friend: String
+                },{collection: 'amigos'}))
+
 module.exports = {
     Count,
     User,
-    Pub
+    Pub,
+    Friend
 }

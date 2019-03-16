@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-/**Util Functions*/
+/**************** Utils ****************/
 
 function getEl(id){
   return document.getElementById(id);
@@ -27,11 +27,6 @@ function notif(text){
 
 /**vars */
 
-/** Adsense*/
-(adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-4431741015257754",
-          enable_page_level_ads: true
-});
 
 /************** WebSockets **************/
 /*var ws = new io();
@@ -96,14 +91,7 @@ getWsAuth(getEl('ctkn').value, auth => {
 })
 
 
-
-
-
-
-
 /************* Publications **************/
-
-
 function newPub(res){
     res.nombre = usuario;
 
@@ -158,22 +146,49 @@ function newPub(res){
 }
 
 /** Get Publications **/
+function getPubs(){
+    var queryHeaders = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': getEl('ctkn').value,
+        'Tipo': 'query'
+    }
+
+    var url = '/api/getPublications?csrf=' + getEl('ctkn').value
+
+    fetch(url, {
+        credentials: 'include',
+        headers: queryHeaders,
+        method: 'GET'
+      })
+        .then(res => {
+          if(res.ok == false){
+              console.log('Home->getPubs(): error');
+              return;
+          }
+          return res.json();
+      })
+        .then(res => {
+        console.log('Home->getPubs():',res);
+        res.forEach(el => {
+            newPub(el);
+        })
+      });
+}
 
 
 /******************* Search Bar *******************/
-
 var searchU = getEl('searchU');
 var searchResults = getEl('searchResults');
 
 function getWord(){
-  if(this.value === '') {
-    searchResults.innerHTML = '';
-    return;
-  }
+    if(this.value === '') {
+        searchResults.innerHTML = '';
+        return;
+    }
 
-  var word = this.value;
+    var word = this.value;
 
-  getUsers( word, getEl('ctkn').value)
+    getUsers( word, getEl('ctkn').value)
 }
 
 searchU.addEventListener('input', getWord );
@@ -210,24 +225,15 @@ function getUsers(user, csrf){
           span.setAttribute('id',el.id);
           span.setAttribute('class','searchText');
           span.textContent = el.usuario;
+          span.addEventListener('click',addFriendMenu);
           searchResults.appendChild(span);
 
         })
     });
 }
 
-function showMatches(){
 
-}
-
-/******************* Contactos ********************/
-
-function searchBar(){
-
-}
-
-
-/** Salir */
+/******************** Salir *******************/
 getEl('salir').addEventListener('click', function(){
     fetch('/api/salir', {
         credentials: 'include',
@@ -242,7 +248,7 @@ getEl('salir').addEventListener('click', function(){
     })
 })
 
-/***get auth */
+/*** Get Auth ***/
 function getWsAuth(csrf,cb){
     var headers = {
         'Content-Type': 'application/json; charset=utf-8',
@@ -267,35 +273,56 @@ function getWsAuth(csrf,cb){
 }
 
 
-function getPubs(){
-    var queryHeaders = {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': getEl('ctkn').value,
-        'Tipo': 'query'
-    }
+/************* Add friends *************/
 
-    var url = '/api/getPublications?csrf=' + getEl('ctkn').value
+function addFriend(friend){
 
-    fetch(url, {
-        credentials: 'include',
-        headers: queryHeaders,
-        method: 'GET'
-      })
-        .then(res => {
-          if(res.ok == false){
-              console.log('Home->getPubs(): error');
-              return;
-          }
-          return res.json();
-      })
-        .then(res => {
-        console.log('Home->getPubs():',res);
-        res.forEach(el => {
-            newPub(el);
-        })
-      });
 }
 
+/**************** Menu creations **************/
 
+function addFriendMenu(data){
+    createMenuBusquedaPerfil(getCoor(this));
+}
+
+/**Obtiene las coordenadas de los elementos a los que se hace click */
+function getCoor(el){
+    var rect = el.getBoundingClientRect();
+    var docEl = document.documentElement;
+
+    var rectTop = rect.top + window.pageYOffset - docEl.clientTop + 10;
+    var rectLeft = rect.right + window.pageXOffset - docEl.clientLeft;
+    return { top: rectTop, left: rectLeft };
+}
+
+/** Crea menu el perfil donde se hace click */
+function createMenuBusquedaPerfil(coor){
+    var divOut = creaEl('div');
+    divOut.setAttribute('class','divOut');
+    divOut.addEventListener('click',function(){
+        var el = document.getElementById('menuContextOptions');
+        el.remove();
+        this.remove();
+    })
+
+    var div = creaEl('div');
+    div.setAttribute('id','menuContextOptions');
+    div.setAttribute('class','optionsMenu');
+    div.style.left = '30px';
+    div.style.top = coor.top+ 5 +'px';
+
+    var span = creaEl('span');
+    span.setAttribute('class','optionsMenuEl enlace');
+    span.innerHTML = 'Agregar a contactos';
+
+    var span1 = creaEl('span');
+    span1.setAttribute('class','optionsMenuEl enlace');
+    span1.innerHTML = 'Enviar mensaje';
+
+    div.append(span);
+    div.append(span1);
+    document.body.append(divOut);
+    document.body.append(div);
+}
 
 })//DOCLoaded
