@@ -31,8 +31,8 @@ function app(req,res){
         /********* GET METHOD **********/
         if(req.url === '/'){
             vGlobal.token = csrf.newToken()
-            //homePage(req, res, vGlobal.token);
-            publicPage(req, res, vGlobal.token);
+            homePage(req, res, vGlobal.token);
+            //publicPage(req, res, vGlobal.token);
         }
 
         else if(req.url === '/stylesheets/index.css'){
