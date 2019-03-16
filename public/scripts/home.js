@@ -305,17 +305,17 @@ function createMenuBusquedaPerfil(coor){
         this.remove();
     })
 
-    var div = creaEl('div');
+    var div = newEl('div');
     div.setAttribute('id','menuContextOptions');
     div.setAttribute('class','optionsMenu');
     div.style.left = '30px';
-    div.style.top = coor.top+ 5 +'px';
+    div.style.top = coor.top + 5 +'px';
 
-    var span = creaEl('span');
+    var span = newEl('span');
     span.setAttribute('class','optionsMenuEl enlace');
     span.innerHTML = 'Agregar a contactos';
 
-    var span1 = creaEl('span');
+    var span1 = newEl('span');
     span1.setAttribute('class','optionsMenuEl enlace');
     span1.innerHTML = 'Enviar mensaje';
 

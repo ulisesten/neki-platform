@@ -4,7 +4,7 @@
 
 - [Neki Platform](#neki-platform)
   * [Features](#features)
-    + [Running a virtual machine with Vagrant](#running-a-virtual-machine-with-vagrant)
+    + [Post](#post)
   * [Tools](#tools)
     
   * [Developers](#developers)
@@ -12,21 +12,24 @@
 
 <!-- tocstop -->
 
-## Neki Platform
+# Neki Platform
 -----------------
 
    Social network build in nodejs
 
-### Features
+## Features
 
     In development
 
-### Tools
+    ### Post
+        
+
+## Tools
 
     Nodejs(pure)
     ws.js
     jsonwebtoken.js
 
-### Developers
+## Developers
 
     ulisesten
