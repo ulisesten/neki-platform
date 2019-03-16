@@ -307,7 +307,7 @@ function createMenuBusquedaPerfil(coor){
 
     var div = newEl('div');
     div.setAttribute('id','menuContextOptions');
-    div.setAttribute('class','optionsMenu');
+    div.setAttribute('class','optionsMenu border');
     div.style.left = '30px';
     div.style.top = coor.top + 5 +'px';
 

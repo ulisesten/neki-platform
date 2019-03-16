@@ -134,6 +134,7 @@ main{
 
 .searchText {
   color: gray;
+  cursor: pointer;
 }
 
 #searchU {
