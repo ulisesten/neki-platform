@@ -218,3 +218,13 @@ a{  color: black;
     background-color: white;
     z-index: 104;
 }
+
+.optionsMenuEl{
+    padding: 10px;
+    display: block;
+}
+
+.optionsMenuEl:hover {
+    background-color: #c44569;
+    color: white;
+}
