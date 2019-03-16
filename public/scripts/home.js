@@ -297,7 +297,7 @@ function getCoor(el){
 
 /** Crea menu el perfil donde se hace click */
 function createMenuBusquedaPerfil(coor){
-    var divOut = creaEl('div');
+    var divOut = newEl('div');
     divOut.setAttribute('class','divOut');
     divOut.addEventListener('click',function(){
         var el = document.getElementById('menuContextOptions');
