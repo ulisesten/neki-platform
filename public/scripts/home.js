@@ -12,20 +12,28 @@ function newEl(el){
     return document.createElement(el);
 }
 
+/**Notificaciones */
 function notif(text){
-    console.log(text);
+    var div = newEl('div');
+    div.setAttribute('class','notif border');
+    div.innerHTML = text;
+    document.body.append(div);
+    
+    setTimeout(() => {
+        div.remove();
+    }, 8000 )
 }
 
 
+/**vars */
+const usuario = localStorage.getItem('usuario');
+const mId = localStorage.getItem('id');
+console.log(usuario);
+var m_socket;
+
 
 /**Calls */
-
-    var usuario = localStorage.getItem('usuario');
-
-    getPubs();
-
-
-/**vars */
+getFriends();
 
 
 /************** WebSockets **************/
@@ -60,9 +68,11 @@ var href = window.location.href;
 var url = href.replace('http','ws');
 
 getWsAuth(getEl('ctkn').value, auth => {
-    console.log('auth',auth.wsAuth);
+    //console.log('auth',auth.wsAuth);
     var ws = new WebSocket(url);
-    var auth = {tipo: 'auth', token: auth.wsAuth };
+    var auth = {tipo: 'auth' , token: auth.wsAuth};
+
+    m_socket = ws;
 
     ws.addEventListener('open', function() {
       console.log('ws connected');
@@ -70,13 +80,19 @@ getWsAuth(getEl('ctkn').value, auth => {
     });
 
     ws.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
+        res = JSON.parse(event.data);
+        console.log('pubs',res.list)
+        if(res !== null && res.tipo === 'pubList')
+        res.list.forEach(el => {
+            newPub(el);
+        })
     });
 
     var pubSender = getEl('pubSender');
     pubSender.addEventListener('click',function(){
         let pubContent = getEl('pubContent');
         var pubData = {
+          userid: mId,
           tipo: 'pub',
           content: pubContent.value,
           tiempo: new Date(),
@@ -86,14 +102,58 @@ getWsAuth(getEl('ctkn').value, auth => {
         pubContent.value = '';
 
         ws.send(JSON.stringify(pubData));
+        pubData.usuario = usuario;
+        console.log(usuario)
         newPub(pubData);
     });
 })
 
+/************* Board *****************/
+
+/** Subiendo imágenes */
+var img_loading = getEl('load_image');
+
+img_loading.addEventListener('change', e => {
+    var divOut = newEl('div');
+        divOut.setAttribute('class','divOut');
+
+    var div = newEl('div');
+        div.setAttribute('class','image_target_container');
+
+    var img_preview = newEl('img');
+        img_preview.setAttribute('class','image_target');
+
+    var file = e.target.files[0];
+
+    if (!file.type.match('image.*')) return;
+
+    var reader = new FileReader();
+    reader.onload = (
+        function() {
+            return function(e) {
+                img_preview.setAttribute('src',e.target.result);
+                div.append(img_preview);
+                divOut.append(div);
+                document.body.append(divOut);
+            }
+    })(file)
+
+    reader.readAsDataURL(file);
+
+    divOut.addEventListener('click',() => {
+        img_preview.remove();
+        div.remove();
+        divOut.remove();
+    })
+})
+
+/** Image editing */
+
+
 
 /************* Publications **************/
 function newPub(res){
-    res.nombre = usuario;
+    res.nombre = res.usuario;
 
     var div = newEl('div');
     div.setAttribute('class','pubs border font');
@@ -145,32 +205,41 @@ function newPub(res){
     getEl('publications').prepend(div);
 }
 
-/** Get Publications **/
-function getPubs(){
+/** Get Friends **/
+function getFriends(){
+    console.log('getting friends')
     var queryHeaders = {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': getEl('ctkn').value,
-        'Tipo': 'query'
+        'Content-Type': 'application/json; charset=utf-8'
     }
 
-    var url = '/api/getPublications?csrf=' + getEl('ctkn').value
+    var url = '/api/getFriends';
 
     fetch(url, {
         credentials: 'include',
         headers: queryHeaders,
-        method: 'GET'
+        method: 'POST',
+        body: JSON.stringify({
+            csrf: getEl('ctkn').value,
+            id: mId
+        })
       })
         .then(res => {
           if(res.ok == false){
-              console.log('Home->getPubs(): error');
+              console.log('Home->getFriends(): error');
               return;
           }
           return res.json();
       })
         .then(res => {
-        console.log('Home->getPubs():',res);
+        console.log('Home->getFriends():',res);
+        if(res !== null)
         res.forEach(el => {
-            newPub(el);
+            console.log(el);
+            var div = newEl('div');
+            div.setAttribute('id',el.friendid);
+            div.setAttribute('class','friend');
+            div.innerHTML = el.friend;
+            getEl('friendzone').append(div);
         })
       });
 }
@@ -219,14 +288,17 @@ function getUsers(user, csrf){
     .then(res => {
         searchResults.innerHTML = '';
         res.forEach(el => {
-          console.log('Home->getPubs():',el);
+          console.log('Home->getSearches:',el);
 
-          var span = newEl('span');
+          var span = newEl('div');
           span.setAttribute('id',el.id);
           span.setAttribute('class','searchText');
           span.textContent = el.usuario;
-          span.addEventListener('click',addFriendMenu);
           searchResults.appendChild(span);
+          span.addEventListener('click', () =>{
+              createMenuBusquedaPerfil(getCoor(span),{'id': el.id, 'usuario': el.usuario});
+          });
+          
 
         })
     });
@@ -235,6 +307,7 @@ function getUsers(user, csrf){
 
 /******************** Salir *******************/
 getEl('salir').addEventListener('click', function(){
+    m_socket.close();
     fetch('/api/salir', {
         credentials: 'include',
         method: 'POST'
@@ -275,15 +348,14 @@ function getWsAuth(csrf,cb){
 
 /************* Add friends *************/
 
-function addFriend(friend){
-
+function agregandoContacto(data){
+    //id= data.target.id;
+    console.log('agregandoContacto',data);
+    data.csrf = getEl('ctkn').value;
+    addContact(data);
 }
 
 /**************** Menu creations **************/
-
-function addFriendMenu(data){
-    createMenuBusquedaPerfil(getCoor(this));
-}
 
 /**Obtiene las coordenadas de los elementos a los que se hace click */
 function getCoor(el){
@@ -296,7 +368,7 @@ function getCoor(el){
 }
 
 /** Crea menu el perfil donde se hace click */
-function createMenuBusquedaPerfil(coor){
+function createMenuBusquedaPerfil(coor,data){
     var divOut = newEl('div');
     divOut.setAttribute('class','menuOut');
     divOut.addEventListener('click',function(){
@@ -314,6 +386,10 @@ function createMenuBusquedaPerfil(coor){
     var span = newEl('span');
     span.setAttribute('class','optionsMenuEl enlace');
     span.innerHTML = 'Agregar a contactos';
+    //span.setAttribute('id',data);
+    span.addEventListener('click',() => {
+        agregandoContacto(data);
+    })
 
     var span1 = newEl('span');
     span1.setAttribute('class','optionsMenuEl enlace');
@@ -323,6 +399,32 @@ function createMenuBusquedaPerfil(coor){
     div.append(span1);
     document.body.append(divOut);
     document.body.append(div);
+}
+
+function addContact(data){
+    fetch('/api/addCnt', {
+        credentials: 'include',
+        headers: queryHeaders,
+        method: 'POST',
+        body: JSON.stringify({
+            'userid': mId,
+            'user': usuario,
+            'friendid': data.id,
+            'friend': data.usuario,
+            'csrf': data.csrf
+        })
+    })
+    .then(res => {
+        if(res.ok == false){
+            console.log('Home->addContact(): error');
+            return;
+        }
+         return res.json();
+    })
+    .then(res => {
+        console.log('Home->addContact():',res);
+        notif(res.msg);
+    });
 }
 
 })//DOCLoaded

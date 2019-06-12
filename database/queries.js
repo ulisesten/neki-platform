@@ -19,7 +19,7 @@ function setCount(ip, date){
 }
 
 function getCount(cb){
-    var count = db.collection('counts');
+    //var count = db.collection('counts');
 
     model.Count.find({},function (err, res) {
         if (err) console.error('getCount: ', err)
@@ -31,20 +31,15 @@ function getCount(cb){
 function checkUser(correo, callback){
     function checking(){
         return new Promise(function (done) {
-            user.findOne({ 'correo': correo}, function(err, res){
+            user.findOne({ 'correo': correo},'-imagen -role -ip -contrib -tiempo', function(err, res){
 
                 if(!res){
                     console.log('usuario no existe',err)
                     done(null);
                 } else {
                     console.log('usuario existe')
-
-                    done({
-                        id: res.id,
-                        nombre: res.usuario,
-                        correo: res.correo,
-                        clave: res.clave,
-                        _id: res._id});
+                    
+                    done(res);
                 }
             })
         })
@@ -81,12 +76,15 @@ function matchingUsers(nombre, callback){
             model.User.find({ 'usuario': regex},'id usuario -_id', function(err, res){
 
                 if(!res){
+
                     console.log('no hay coincidencias',err)
                     done(null);
-                } else {
-                    console.log('Se encontraron coincidencias')
 
+                } else {
+
+                    console.log('Se encontraron coincidencias')
                     done(res);
+
                 }
             })
         })
@@ -113,7 +111,7 @@ function savePub(data, cb){
         });
 }
 
-function matchingPubs(nombre, callback){
+/*function matchingPubs(nombre, callback){
     function checking(){
         return new Promise(function (done) {
 
@@ -135,6 +133,25 @@ function matchingPubs(nombre, callback){
     checking().then(function(res){
         callback(res);
     })
+}*/
+
+function matchingPubs(arr, callback){
+    function checking(){
+        return new Promise(function (done) {
+
+            //var regex = new RegExp(nombre,'gi')
+            pub.find({ 'userid': { $in: arr }},'-_id').toArray(function (err, res) {
+                if (err) console.log('lP:err', res)
+
+                console.log('pubs',res);
+                done(res)
+            })
+        })
+    }
+
+    checking().then(function(res){
+        callback(res);
+    })
 }
 
 function setFriend(data, cb){
@@ -142,13 +159,59 @@ function setFriend(data, cb){
 
     friend.save((err, res) => {
         if (err) {
-            console.log('setFriend: Error al intentar guardar',error);
+            console.log('setFriend: Error al intentar guardar:',error);
             cb(null);
         } else {
-            console.log('setFriend: La siguiente publicaci_on se guard_o correctamente', res.id);
+            console.log('setFriend: El siguiente contacto se guardo_ con e_xito:', res.id);
             cb(res);
         }
     });
+}
+
+function getFriendsId(userid, callback){
+    function checking(){
+        return new Promise(function (done) {
+
+            //var regex = new RegExp(nombre,'gi')
+            model.Friend.find({ 'userid': userid }).distinct('friendid',function(err, res){
+
+                if(!res){
+                    console.log('No hay contactos id',err)
+                    done(null);
+                } else {
+                    console.log('Se encontraron contactos id',res)
+                    done(res);
+                }
+            })
+        })
+    }
+
+    checking().then(function(res){
+        callback(res);
+    })
+}
+
+function getFriends(userid, callback){
+    function checking(){
+        return new Promise(function (done) {
+
+            //var regex = new RegExp(nombre,'gi')
+            model.Friend.find({ 'userid': userid },'-_id -userid -user', function(err, res){
+
+                if(!res){
+                    console.log('No hay contactos',err)
+                    done(null);
+                } else {
+                    console.log('Se encontraron contactos',res)
+                    done(res);
+                }
+            })
+        })
+    }
+
+    checking().then(function(res){
+        callback(res);
+    })
 }
 
 /**function dropDb(){
@@ -164,5 +227,7 @@ module.exports = {
     matchingUsers,
     savePub,
     matchingPubs,
-    setFriend
+    setFriend,
+    getFriendsId,
+    getFriends
 }

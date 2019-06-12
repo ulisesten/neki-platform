@@ -38,13 +38,13 @@ body {
         display: inline-block;
     }
 
-        .navigation ul li span,a {
+        .navigation ul li span {
             display: block;
             padding: 0.5rem 1rem;
             transition: all 0.4s linear;
             border-radius: 3px;
         }
-            .navigation ul li span:hover,a:hover {
+            .navigation ul li span:hover {
                 background-color: black;
                 color: white;
             } 
@@ -99,6 +99,37 @@ main{
 
 .board{ margin-bottom: 5px; padding: 10px 5px 5px;}
 
+#img_btn {
+    cursor: pointer;
+}
+
+.image_target {
+    margin: 5px;
+    height: 70%;
+    margin: 0 auto;
+}
+
+.image_target_container {
+    position: relative;
+    top: 0;
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    background-color: black;
+    border-radius: 4px;
+}
+
+.divOut {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+}
+
+#load_image{
+    display: none;
+}
+
 /****** Publications ******/
 
 .pubs{
@@ -128,10 +159,6 @@ main{
   top: 70px;
 }
 
-.r-section-w{
-  /*background-color: black; */
-}
-
 .searchText {
   color: gray;
   cursor: pointer;
@@ -140,6 +167,12 @@ main{
 #searchU {
     position: relative;
     width: 100%;
+}
+
+.friend {
+    margin: 2px;
+    color: #59a2f5;
+    cursor: pointer;
 }
 
 /**video*/
@@ -171,8 +204,15 @@ min-width: 250px;
     .r-section-w{ width: 90%; display: none;}
 }
 /*Mediano*/
+@media only screen and (min-width: 428px) {
+    .main-w{width: 81%;}
+    .main-p{position: relative; left: 0%;}
+    .r-section-w{ width: 80%; display: none;}
+
+}
+/*Mediano*/
 @media only screen and (min-width: 568px) {
-    .main-w{width: 61%;}
+    .main-w{width: 71%;}
     .main-p{position: relative; left: 0%;}
     .r-section-w{ width: 80%; display: none;}
 
@@ -180,14 +220,14 @@ min-width: 250px;
 /*Largo*/
 @media only screen and (min-width: 768px) {
     .main-w{width: 49%;}
-    .main-p{position: relative; left: 22%;}
-    .r-section-w{ width: 19.5%; display: block; }
+    .main-p{position: relative; left: 20%;}
+    .r-section-w{ width: 19%; display: block; }
 }
 /*Extra largo*/
 @media only screen and (min-width: 968px) {
     .main-w{width: 38.8%;}
-    .main-p{position: relative; left: 18.4%;}
-    .r-section-w{ width: 16.5%; display: block; }
+    .main-p{position: relative; left: 17%;}
+    .r-section-w{ width: 16%; display: block; }
 }
 
 
@@ -221,6 +261,7 @@ a{  color: black;
 }
 
 .optionsMenuEl{
+    transition: all 0.2s linear;
     padding: 10px;
     display: block;
     cursor: pointer;
@@ -229,4 +270,13 @@ a{  color: black;
 .optionsMenuEl:hover {
     background-color: #c44569;
     color: white;
+}
+
+.notif {
+    padding: 15px;
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    min-width: 50px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 3px 0 rgba(0, 0, 0, 0.19);
 }

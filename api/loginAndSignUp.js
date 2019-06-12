@@ -66,7 +66,7 @@ function registrationApi(req, res){
                                             //setting the response
                                             console.log('csrf passed');
                                             res.writeHead(200, _cookies.header(mycookie));
-                                            res.write(JSON.stringify({ nombre: doc.usuario, ref: 'platform'}));
+                                            res.write(JSON.stringify({ id: doc.id, usuario: doc.usuario}));
                                             res.end();
                                         }
 
@@ -133,7 +133,7 @@ function loginApi(req, res){
 
                         if( auth === true ){
                             res.writeHead(200, _cookies.header(mycookie));
-                            res.write(JSON.stringify({ nombre: doc.nombre, ref: 'platform' }));
+                            res.write(JSON.stringify({ id: doc.id, usuario: doc.usuario }));
                         } else {
                             console.log('Problemas con las credenciales')
                             res.writeHead(401, _cookies.header(_cookies.clearCookie()));

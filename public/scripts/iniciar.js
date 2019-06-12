@@ -46,7 +46,9 @@ function register(correo, pass, csrf){
         })
         .then(res => {
             if(res !== null){
-                localStorage.setItem("usuario", res.nombre);
+                localStorage.setItem("id", res.id);
+                localStorage.setItem("usuario", res.usuario);
+                console.log(res);
                 window.location.href = '/';
             } else
                 return;

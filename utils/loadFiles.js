@@ -41,7 +41,32 @@ function loadStatic(path, res, acceptEncoding){
     })
 }
 
+/**load static files */
+function loadScript(path, res, acceptEncoding){
+    fs.readFile(path, function(err, data){
+        if(!err){
+            var raw = fs.createReadStream(path);
+
+            if (acceptEncoding.match(/\bdeflate\b/)) {
+                res.writeHead(200, { 'content-encoding': 'deflate','Content-Type': 'text/javascript' , 'X-Content-Type-Options': 'nosniff'});
+                raw.pipe(zlib.createDeflate()).pipe(res);
+            } else if (acceptEncoding.match(/\bgzip\b/)) {
+                res.writeHead(200, { 'content-encoding': 'gzip','Content-Type': 'text/javascript', 'X-Content-Type-Options': 'nosniff' });
+                raw.pipe(zlib.createGzip()).pipe(res);
+            } else {
+                res.writeHead(200, {});
+                raw.pipe(response);
+            }
+        } else {
+            res.writeHead(404)
+            res.end()
+        }
+        
+    })
+}
+
 module.exports = {
     loadView,
-    loadStatic
+    loadStatic,
+    loadScript
 }

@@ -18,8 +18,8 @@ function clearCookie(){
     })
 }
 
-function header(cookie){
-    return {'Set-Cookie': cookie,'Content-Type': 'application/json; charset=utf-8'}
+function header(mycookie){
+    return {'Set-Cookie': mycookie,'Content-Type': 'application/json; charset=utf-8'}
 }
 
 function redirect(){

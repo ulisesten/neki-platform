@@ -2,6 +2,8 @@ var query = require('../database/queries'),
     jwt = require('./json-tokens'),
     nanoid = require('nanoid');
 
+var clients = {};
+
 function websockets(io){
     /*io.on('connection', socket => {
         console.log('io',socket.request.connection)
@@ -26,40 +28,64 @@ function websockets(io){
 
       var authorized;
       var allow = false;
+
       socket.on('message', function incoming(data) {
 
           data = JSON.parse(data)
+          //console.log(data.method);
 
           /**Authentication*/
           if(data.tipo === 'auth'){
             authorized = jwt.decode(data.token);
+
             if(authorized){
+
               allow = true;
-              console.log('User allowed')
+              clients[authorized.id] = socket;
+              
+              /** Here go friends and pubs */
+              query.getFriendsId(authorized.id, doc => {
+                
+                doc.push(authorized.id);
+                query.matchingPubs(doc, res => {
+
+                  var o = { "tipo": 'pubList', "list": res };
+                  socket.send(JSON.stringify(o));
+
+                })
+                
+              })
+              
+              
             } else {
+
               socket.close();
               console.log('La conexión fue cerrada')
+
             }
           }
 
           /**Si está autorizado */
           if(allow === true){
+            console.log('auth',authorized);
 
             if(data.tipo === 'pub'){
               console.log('Nueva publicación')
 
               var toSave = {
                 id: nanoid(),
-                usuario: authorized.nombre,
+                userid: data.userid,
+                usuario: authorized.usuario,
                 content: data.content,
                 tiempo: data.tiempo
               }
+              
 
               query.savePub(toSave, (res) => {
                   if(res) {
                     console.log('La publicación se guardó correctamente:', res);
                   } else {
-                    console.log('Error al guarar publicación');
+                    console.log('Error al guardar publicación');
                   }
               })
             }
@@ -70,6 +96,10 @@ function websockets(io){
           }
 
       });
+    })
+
+    ws.on('closed',() => {
+      console.log('socket cerrado');
     })
 
   }

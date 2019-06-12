@@ -26,6 +26,7 @@ var User = mongoose
 var Pub = mongoose
                 .model('pubs',new Schema({
                     id: String,
+                    userid: String,
                     usuario: String,
                     content: String,
                     tiempo: String,
@@ -38,7 +39,7 @@ var Friend = mongoose
                 .model('friends', new Schema({
                     userid: String,
                     user: String,
-                    friendId: String,
+                    friendid: String,
                     friend: String
                 },{collection: 'amigos'}))
 

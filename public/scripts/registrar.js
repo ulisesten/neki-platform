@@ -83,8 +83,9 @@ function register(nombre, correo, pass, csrf, contrib){
         })
         .then(res => {
             if(res !== null){
-               localStorage.setItem("usuario", res.nombre);
-               window.location.href = '/';
+                localStorage.setItem("id", res.id);
+                localStorage.setItem('usuario', res.usuario);
+                window.location.href = '/';
             }
             return;
         });
