@@ -37,7 +37,7 @@ function app(req,res){
                 //publicPage(req, res, vGlobal.token);
         }
 
-        else if(req.url === '/profile/content'){
+        else if(req.url === '/content'){
                 vGlobal.token = csrf.newToken();
                 publicPage(req,res,csrf.newToken);
         }

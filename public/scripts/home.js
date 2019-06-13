@@ -2,6 +2,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+var i = 0;
+
+for(i;i < 40; i++){
+    var panel = getEl('panel');
+    var iframe = newEl('iframe');
+
+    iframe.setAttribute('src','https://www.youtube.com/embed/xRjepOsnglQ?start=1');
+    iframe.setAttribute('width','500');
+    iframe.setAttribute('frameborder','0');
+    //iframe.setAttribute('','');
+    //iframe.setAttribute('','');
+    //iframe.setAttribute('','');
+    panel.appendChild(iframe);
+}
+
 /**************** Utils ****************/
 
 function getEl(id){
