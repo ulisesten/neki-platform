@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var get = require('../server/get/get');
+var post = require('../server/post/post');
+
+function app(req,res){
+    if(req.method === 'GET')
+
+        get(req, res);
+
+    else
+
+        post(req,res);
+}
+
+module.exports = app;

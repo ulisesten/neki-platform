@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+var route = require('./routes');
+
+function get(req, res, ops){
+    
+    if(req.url === '/'){
+
+        route.home(req, res);
+
+    } else {
+
+        route.test(req,res);
+        
+    }
+    
+}
+
+module.exports = get;

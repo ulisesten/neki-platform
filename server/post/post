@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+var route = require('./routes');
+
+function post(req, res, ops){
+    
+    route.test(req,res);
+    
+}
+
+module.exports = post;
