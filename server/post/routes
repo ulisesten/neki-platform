@@ -1,18 +1,54 @@
-function home(req, res, ops){
-    console.log('You are in Home');
-    res.writeHead(200);
-    res.write('Hola nodejs');
-    res.end();
-    
+#!/usr/bin/env node
+
+var db = require('../../database/connect')
+
+var usersCollection = db.collection('usuarios');
+
+
+function mobileLogin(req, res, ops){
+    var body = '';
+
+    /**handle body */
+    req.on('data', data => {    body += data;    });
+
+
+        /**Function target */
+        req.on('end', () => {
+
+            body = JSON.parse(body);
+
+            usersCollection.findOne({ 'correo': correo},'-imagen -role -ip -contrib -tiempo', function(err, doc){
+
+                if(!doc){
+                    console.log('usuario no existe',err)
+                    jsonBadResponse(res, 401);
+                } else {
+                    console.log('usuario existe')
+                    jsonResponse(res, 200, { id: '9dgfasdf79as79', info: 'postMethod'});
+                }
+
+            })
+
+        });
+
 }
 
-function test(req, res, ops){
-    res.writeHead(200);
-    res.write(JSON.stringify({ id: '9dgfasdf79as79', info: 'postMethod'}));
-    res.end();
-}
+    /**     Utils     */
+    function jsonResponse(res, status, jsondata){
+        res.writeHead(status);
+        res.write(JSON.stringify(jsondata));
+        res.end();
+    }
+
+    function jsonBadResponse(res, status){
+        res.writeHead(status);
+        res.end();
+    }
+
+    function handleCredentials(client, server){
+
+    }
 
 module.exports = {
-    home,
-    test
+    mobileLogin
 }

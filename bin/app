@@ -8,9 +8,13 @@ function app(req,res){
 
         get(req, res);
 
-    else
+    else if (req.method === 'POST')
 
         post(req,res);
+
+    else
+
+        res.end();
 }
 
 module.exports = app;
