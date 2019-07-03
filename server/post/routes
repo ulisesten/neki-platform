@@ -14,7 +14,7 @@ function mobileLogin(req, res, ops){
 
         /**Function target */
         req.on('end', () => {
-
+            body = JSON.stringify(json);
             body = JSON.parse(body);
 
             console.log('mobileLogin',body);
