@@ -17,7 +17,7 @@ function mobileLogin(req, res, ops){
 
             body = JSON.parse(body);
 
-            usersCollection.findOne({ 'correo': correo},'-imagen -role -ip -contrib -tiempo', function(err, doc){
+            usersCollection.findOne({ 'correo': body.correo},'-imagen -role -ip -contrib -tiempo', function(err, doc){
 
                 if(!doc){
                     console.log('usuario no existe',err)
