@@ -17,6 +17,8 @@ function mobileLogin(req, res, ops){
 
             body = JSON.parse(body);
 
+            console.log('mobileLogin',body);
+
             usersCollection.findOne({ 'correo': body.correo},'-imagen -role -ip -contrib -tiempo', function(err, doc){
 
                 if(!doc){
