@@ -33,3 +33,19 @@
 ## Developers
 
     ulisesten
+
+## C++ addons
+
+   install: node-gyp
+   binding.gyp file: 
+
+        {
+            "targets": [
+                {
+                    "target_name": "addon",
+                    "sources": ["addon.cc"]
+                }
+            ]
+        }
+
+   run: node-gyp configure build

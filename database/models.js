@@ -12,24 +12,24 @@ var Count = mongoose
 
 var User = mongoose
                 .model('users',new Schema({
-                    id: String,
-                    correo: String,
-                    usuario: String,
-                    clave: String,
-                    imagen: String,
+                    user_id: String,
+                    email: String,
+                    username: String,
+                    password: String,
+                    image: String,
                     role: Number,
-                    ip: Array,
+                    user_ip: Array,
                     contrib: Boolean,
-                    tiempo: String
+                    timestamp: String
                 },{collection: 'usuarios'}))
 
 var Pub = mongoose
                 .model('pubs',new Schema({
                     id: String,
                     userid: String,
-                    usuario: String,
+                    username: String,
                     content: String,
-                    tiempo: String,
+                    timestamp: String,
                     mg: Number,
                     nmg: Number,
                     coments: Number
