@@ -11,6 +11,8 @@ function websockets(io){
         socket.on('message', function(data) {
             
             console.log('websockets', data);
+            
+            socket.emit('message', 'This is a response from server');
 
         });
         
