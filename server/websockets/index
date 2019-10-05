@@ -12,7 +12,7 @@ function websockets(io){
             
             console.log('websockets', data);
             
-            io.emit('message', data);
+            io.broadcast.emit('message', data);
 
         });
         
