@@ -11,7 +11,11 @@ function websockets(io){
         socket.on('message', function(data) {
             
             console.log('websockets', data);
+
+            data.type = "outgoing"
+            socket.emit('message', data)
             
+            data.type = "incoming"
             io.broadcast.emit('message', data);
 
         });
