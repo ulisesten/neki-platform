@@ -2,10 +2,10 @@
 
 var db = require('../../../database/connect');
 var model= require('../../../database/models');
-var util = require('../utils/responses');
-var parser = require('../utils/parser');
-var enc = require('../utils/encryption')
-var jwt = require('../utils/jwt');
+var util = require('../../utils/responses');
+var parser = require('../../utils/parser');
+var enc = require('../../utils/encryption')
+var jwt = require('../../utils/jwt');
 
 var usersCollection = db.collection('usuarios');
 

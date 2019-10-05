@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var auth = require('./routes/auth');
-var info = require('/routes/info')
+var info = require('./routes/info')
 
 function post(req, res, ops){
     
